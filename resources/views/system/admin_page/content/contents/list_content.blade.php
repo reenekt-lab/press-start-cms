@@ -18,11 +18,13 @@
                             Контент
                         </p>
                     </div>
+                    @if(Gate::allows('access_to_create'))
                     <div class="wrap_list_btn">
                         <a href="{{route('from_add_content',$id)}}">
                             <input class="btn btn-primary btn_preloader" type="submit" value="Добавить элемент">
                         </a>
                     </div>
+                    @endif
                 </div>
                 <div class="row col_list_category" style="display: flex;flex-wrap: wrap">
                     <div class="col-1">
@@ -85,9 +87,13 @@
                                         <div class="select_tag">
                                             <select name="option_action" class="select">
                                                 <option disabled selected > - ДЕЙСТВИЯ - </option>
+                                                @if(Gate::allows('access_to_edit'))
                                                 <option>Активировать</option>
                                                 <option>Деактивировать</option>
+                                                @endif
+                                                @if(Gate::allows('access_to_delete'))
                                                 <option>Удалить</option>
+                                                @endif
                                             </select>
                                         </div>
                                         <div class="input_tag">

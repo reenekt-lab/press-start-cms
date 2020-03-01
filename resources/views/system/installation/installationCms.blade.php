@@ -12,11 +12,11 @@
                         <div class="row">
                             <div class="col-12 d-flex justify-content-center">
                                 @error('wrong_login_or_password')
-                                    <div class="wrap_error_installation">
-                                        <p>
-                                            {{$message}}
-                                        </p>
-                                    </div>
+                                <div class="wrap_error_installation">
+                                    <p>
+                                        {{$message}}
+                                    </p>
+                                </div>
                                 @enderror
                             </div>
                         </div>
@@ -25,27 +25,55 @@
                             <div class="row input_installation">
                                 <div class="col-md-5 d-flex justify-content-end mb-2 title_installation">
                                     <p>
+                                        Сервер базы данных (по умолчанию localhost или 127.0.0.1)
+                                    </p>
+                                </div>
+                                <div class="col-md-6 mb-2 input_installation">
+                                    @error('db_host')
+                                    <p>
+                                        {{$message}}
+                                    </p>
+                                    @enderror
+                                    <input name="db_host" type="text" class="input_installation"
+                                           value="{{old('db_host')}}">
+                                </div>
+                                <div class="col-md-5 d-flex justify-content-end mb-2 title_installation">
+                                    <p>
+                                        Порт для подключения к БД (по умолчанию 3306)
+                                    </p>
+                                </div>
+                                <div class="col-md-6 mb-2 input_installation">
+                                    @error('db_host')
+                                    <p>
+                                        {{$message}}
+                                    </p>
+                                    @enderror
+                                    <input name="db_port" type="text" class="input_installation"
+                                           value="{{old('db_port')}}">
+                                </div>
+                                <div class="col-md-5 d-flex justify-content-end mb-2 title_installation">
+                                    <p>
                                         Название базы данных
                                     </p>
                                 </div>
                                 <div class="col-md-6 mb-2 input_installation">
                                     @error('name_db')
-                                        <p>
-                                            {{$message}}
-                                        </p>
+                                    <p>
+                                        {{$message}}
+                                    </p>
                                     @enderror
                                     <input name="name_db" type="text" class="input_installation" value="{{old('name_db')}}">
                                 </div>
                                 <div class="col-md-5 d-flex justify-content-end mb-2">
                                     <p>
-                                        Логин
+                                        Имя пользователя базы данных
                                     </p>
                                 </div>
                                 <div class="col-md-6 mb-2 input_installation">
                                     @error('login_db')
-                                        <p>
-                                            {{$message}}
-                                        </p>
+                                    <p>
+                                        {{$message}}
+                                    </p>
                                     @enderror
                                     <input name="login_db" type="text" class="input_installation">
                                 </div>
@@ -55,7 +83,8 @@
                                     </p>
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <input name="password_db" type="text" class="input_installation">
+                                    <input name="db_password" type="text" class="input_installation"
+                                           value="{{old('db_username')}}">
                                 </div>
                             </div>
 
@@ -76,6 +105,11 @@
 
     {{--preloader--}}
     <div class="bg_fix_preloader">
-        <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+        <div class="lds-ring">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
     </div>
 @endsection

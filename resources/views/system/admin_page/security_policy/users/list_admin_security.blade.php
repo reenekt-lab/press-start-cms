@@ -15,11 +15,13 @@
                     <p>
                         Список пользователей
                     </p>
+                    @if(Gate::allows('access_to_create'))
                     <div>
                         <a class="btn btn-primary" href="{{route('form_user')}}">
                             Добавить пользователя
                         </a>
                     </div>
+                    @endif
                 </div>
                 <div class="row col_list_category">
                     <div class="col-2 d-flex justify-content-center align-items-center">
@@ -84,9 +86,13 @@
                                     <div class="select_tag">
                                         <select name="option_action" class="select">
                                             <option disabled selected > - ДЕЙСТВИЯ - </option>
+                                            @if(Gate::allows('access_to_edit'))
                                             <option>Активировать</option>
                                             <option>Деактивировать</option>
+                                            @endif
+                                            @if(Gate::allows('access_to_delete'))
                                             <option>Удалить</option>
+                                            @endif
                                         </select>
                                     </div>
                                     <div class="input_tag">

@@ -1,5 +1,6 @@
 <?php
 
+use App\Library\InstallCms\Install;
 use Illuminate\Support\Str;
 
 return [
@@ -46,11 +47,11 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => 'press_start_cms',
-            'username' => 'root',
-            'password' => '',
+            'host' => Install::getAccessDb('DB_HOST'),
+            'port' => Install::getAccessDb('DB_PORT'),
+            'database' => Install::getAccessDb('DB_DATABASE'),
+            'username' => Install::getAccessDb('DB_USERNAME'),
+            'password' => Install::getAccessDb('DB_PASSWORD'),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8',
             'collation' => 'utf8_general_ci',

@@ -20,12 +20,12 @@ class AuthAdminPage
     {
         if(\Auth::check())
         {
-            if(Gate::allows('select_role_user'))
+            if(Gate::allows('access_admin_page'))
             {
                 return $next($request);
             }else
             {
-                return redirect()->back();
+                return redirect('/');
             }
         }else
             return redirect()->route('login_form');

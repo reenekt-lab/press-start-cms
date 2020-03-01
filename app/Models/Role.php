@@ -30,4 +30,33 @@ class Role extends Model
     {
         return $this->belongsToMany(User::class);
     }
+
+    public static function addNewRole($newRequest)
+    {
+        $role = new Role();
+        $role->name = $newRequest['nameRole'];
+        $role->super_user = false;
+        $role->access_admin_page=array_key_exists('access_admin_page',$newRequest)?true:false;
+        $role->access_content=array_key_exists('access_content',$newRequest)?true:false;
+        $role->access_security=array_key_exists('access_security_policy',$newRequest)?true:false;
+        $role->access_setting=array_key_exists('access_setting',$newRequest)?true:false;
+        $role->access_to_create=array_key_exists('access_to_create',$newRequest)?true:false;
+        $role->access_to_edit=array_key_exists('access_to_edit',$newRequest)?true:false;
+        $role->access_to_delete=array_key_exists('access_to_delete',$newRequest)?true:false;
+        $role->save();
+    }
+
+    public static function updRole($newRequest, $id)
+    {
+        Role::where('id', $id)->update([
+            'name' => $newRequest['nameRole'],
+            'access_admin_page' => array_key_exists('access_admin_page',$newRequest)? true:false,
+            'access_content' => array_key_exists('access_content',$newRequest)? true:false,
+            'access_security' => array_key_exists('access_security_policy',$newRequest)? true:false,
+            'access_setting' => array_key_exists('access_setting',$newRequest)? true:false,
+            'access_to_create' => array_key_exists('access_to_create',$newRequest)? true:false,
+            'access_to_edit' => array_key_exists('access_to_edit',$newRequest)? true:false,
+            'access_to_delete' => array_key_exists('access_to_delete',$newRequest)? true:false,
+        ]);
+    }
 }

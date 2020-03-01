@@ -64,6 +64,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Category::class);
     }
 
+    public function group_security_policy()
+    {
+        return $this->belongsTo(GroupSecurityAccess::class);
+    }
+
     /**
      * The attributes that are mass assignable.
      *

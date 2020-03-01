@@ -3,7 +3,7 @@
 //region Installation CMS
 
 Route::group(['prefix'=>'installation','namespace'=>'System\Installation'],function () {
-    Route::get('/',['uses'=>'InstallationCms@index','middleware'=>'installationCms','as'=>'displayInstallationForm']);
+    Route::get('/',['uses'=>'InstallationCms@index','as'=>'displayInstallationForm']);
     Route::post('/',['uses'=>'InstallationCms@setSettingDb','as'=>'setSettingDb']);
 });
 
@@ -12,14 +12,14 @@ Route::group(['prefix'=>'installation','namespace'=>'System\Installation'],funct
 //region Если тема не выбрана
 
 //Если нет вообще шаблонов
-Route::get('/null', ['uses'=>'IndexController@index','as'=>'qwerty']);
+//Route::get('/null', ['uses'=>'IndexController@index','as'=>'qwerty']);
 
 //endregion
 
 //region AuthCustom
 
 //Регистрация юзера, кастомное (Просто нужно!)
-Route::group(['prefix'=>'/registration','namespace'=>'System\AuthCustom','middleware'=>'registrationCustom'],function (){
+Route::group(['prefix'=>'/registration_install','namespace'=>'System\AuthCustom','middleware'=>'registrationCustom'],function (){
     Route::get('/',['uses'=>'RegistrationCustom@index','as'=>'displayRegistrationForm']);
     Route::post('/add_user',['uses'=>'RegistrationCustom@registUser','as'=>'registUser']);
 });
@@ -111,6 +111,9 @@ Route::group(['prefix'=>'psc','middleware'=>'auth_admin_page','namespace'=>'Syst
         //Отображение списка ролей
         Route::get('/all_roles',['uses'=>'SecurityPolicy@displayRoles','as'=>'all_roles']);
 
+        //Отображение формы добавления роли
+        Route::get('/from_role',['uses'=>'SecurityPolicy@displayFromAddRoles','as'=>'from_add_role']);
+
         //Роль детально
         Route::get('/detail_role/{id}',['uses'=>'SecurityPolicy@displayDetailRole','as'=>'detail_role']);
 
@@ -133,41 +136,4 @@ Route::group(['prefix'=>'psc','middleware'=>'auth_admin_page','namespace'=>'Syst
     Route::post('/setting/theme/change', 'AdminContent@change_theme')->name('admin.settings.change_theme');
     //endregion
 });
-//endregion
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//region Хз что это
-
-// Маршруты авторизации / регистрации
-//Auth::routes();
-
-// CRUD маршруты для статей (постов)
-Route::resource('/post', 'PostController');
-
-// TODO
-Route::get('/home', 'HomeController@index')->name('home');
 //endregion

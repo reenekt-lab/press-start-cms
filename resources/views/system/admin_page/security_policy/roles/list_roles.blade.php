@@ -13,9 +13,13 @@
                     <p>
                         Категории
                     </p>
+                    @if(Gate::allows('access_to_create'))
                     <div>
-                        <input class="btn btn-primary btn_category" type="submit" value="Добавить роль">
+                        <a href="{{route('from_add_role')}}">
+                            <input class="btn btn-primary btn_category" type="submit" value="Добавить роль">
+                        </a>
                     </div>
+                    @endif
                 </div>
                 @if ($errors->any())
                     <div class="error_list">
@@ -34,16 +38,6 @@
                         @enderror
                     </div>
                 @endif
-                <form method="post" action="{{route('add_role')}}">
-                    @csrf
-                    <div class="wrap_ajax_form
-                        @if($errors->any())
-                            display_form
-                        @endif">
-                        <input name="role_name" class="ajax_input" type="text" placeholder="название роли">
-                        <input class="btn btn-primary btn_ajax_catgory btn_preloader" type="submit" value="Добавить">
-                    </div>
-                </form>
                 <div class="row col_list_category">
                     <div class="col-1">
                         <input type="checkbox" class="main_checkbox_admin_page">
@@ -89,7 +83,9 @@
                                         <div class="select_tag">
                                             <select name="option_action" class="select">
                                                 <option disabled selected > - ДЕЙСТВИЯ - </option>
+                                                @if(Gate::allows('access_to_delete'))
                                                 <option>Удалить</option>
+                                                @endif
                                             </select>
                                         </div>
                                         <div class="input_tag">

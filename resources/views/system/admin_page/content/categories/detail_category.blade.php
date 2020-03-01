@@ -59,7 +59,9 @@
                     </p>
                     <input name="name_category" type="text" value="{{old('name_category',$arCategory->name)}}">
                 </div>
+                @if(Gate::allows('access_to_edit'))
                 <input class="btn btn-primary btn_preloader" type="submit" value="Сохранить">
+                @endif
             </form>
         </div>
     </div>

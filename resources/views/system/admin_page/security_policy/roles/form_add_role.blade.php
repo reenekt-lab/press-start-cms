@@ -1,16 +1,16 @@
 @extends('system.admin_page.admin')
 
-@section('detail_role')
+@section('from_add_role')
     <div class="row">
         <div class="col-12">
-            <form class="form_user" method="post" action="{{route('update_role',$role->id)}}">
+            <form class="form_user" method="post" action="{{'add_role'}}">
                 @csrf
                 <div class="row">
                     <div class="col-8">
                         <div class="bg_detail">
                             <div class="wrap_chain">
                                 <a class="a_category" href="{{route('all_roles')}}">Список ролей</a>
-                                <a href="javascript:void(0)">{{$role->name}}</a>
+                                <a href="javascript:void(0)">Добавление роли</a>
                             </div>
                             @if ($errors->any())
                                 <div class="error_list">
@@ -33,11 +33,9 @@
                                 <p>
                                     Название роли
                                 </p>
-                                <input name="nameRole" type="text" value="{{old('nameRole',$role->name)}}">
+                                <input name="nameRole" type="text" value="{{old('nameRole')}}">
                             </div>
-                            @if(Gate::allows('access_to_edit'))
-                            <input class="btn btn-primary btn_preloader" type="submit" value="Сохранить">
-                            @endif
+                            <input class="btn btn-primary btn_preloader" type="submit" value="Добавить">
                         </div>
                     </div>
                     <div class="col-4">
@@ -46,71 +44,43 @@
                                 Права
                             </p>
                             <div class="wrap_access_points">
-                                <input name="access_admin_page" type="checkbox" id="checkbox-id-2"
-                                    @if($role->access_admin_page)
-                                        checked
-                                    @endif
-                                />
+                                <input name="access_admin_page" type="checkbox" id="checkbox-id-2" />
                                 <label for="checkbox-id-2">
                                     Доступ к админ странице
                                 </label>
                             </div>
                             <div class="wrap_access_points">
-                                <input name="access_content" type="checkbox" id="checkbox-id-3"
-                                   @if($role->access_content)
-                                       checked
-                                    @endif
-                                />
+                                <input name="access_content" type="checkbox" id="checkbox-id-3" />
                                 <label for="checkbox-id-3">
                                     Доступ к контенту
                                 </label>
                             </div>
                             <div class="wrap_access_points">
-                                <input name="access_security_policy" type="checkbox" id="checkbox-id-4"
-                                   @if($role->access_security)
-                                       checked
-                                    @endif
-                                />
+                                <input name="access_security_policy" type="checkbox" id="checkbox-id-4" />
                                 <label for="checkbox-id-4">
                                     Доступ к политике безопасноси
                                 </label>
                             </div>
                             <div class="wrap_access_points">
-                                <input name="access_setting" type="checkbox" id="checkbox-id-5"
-                                   @if($role->access_setting)
-                                       checked
-                                    @endif
-                                />
+                                <input name="access_setting" type="checkbox" id="checkbox-id-5" />
                                 <label for="checkbox-id-5">
                                     Доступ к настройкам
                                 </label>
                             </div>
                             <div class="wrap_access_points">
-                                <input name="access_to_create" type="checkbox" id="checkbox-id-6"
-                                   @if($role->access_to_create)
-                                       checked
-                                    @endif
-                                />
+                                <input name="access_to_create" type="checkbox" id="checkbox-id-6" />
                                 <label for="checkbox-id-6">
                                     Возможность создавать
                                 </label>
                             </div>
                             <div class="wrap_access_points">
-                                <input name="access_to_edit" type="checkbox" id="checkbox-id-7"
-                                   @if($role->access_to_edit)
-                                       checked
-                                    @endif
-                                />
+                                <input name="access_to_edit" type="checkbox" id="checkbox-id-7" />
                                 <label for="checkbox-id-7">
                                     Возможность редактировать
                                 </label>
                             </div>
                             <div class="wrap_access_points">
-                                <input name="access_to_delete" type="checkbox" id="checkbox-id-8"
-                                   @if($role->access_to_delete)
-                                       checked
-                                    @endif
-                                />
+                                <input name="access_to_delete" type="checkbox" id="checkbox-id-8" />
                                 <label for="checkbox-id-8">
                                     Возможность удалять
                                 </label>

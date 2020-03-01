@@ -15,9 +15,11 @@
                     <p>
                         Категории
                     </p>
+                    @if(Gate::allows('access_to_create'))
                     <div>
                         <input class="btn btn-primary btn_category" type="submit" value="Добавить категорию">
                     </div>
+                    @endif
                 </div>
                 @if ($errors->any())
                     <div class="error_list">
@@ -72,9 +74,9 @@
                                     <div class="col-1 list_category_tool">
                                         <input name="checkbox_{{$arItem->id}}" class="row_checkbox" type="checkbox">
                                     </div>
-                                    <div class="col-1 d-flex justify-content-start list_category_change_btn">
+                                    <div class="col-1 d-flex justify-content-center list_category_change_btn">
                                         <a href="{{route('update_category',$arItem->id)}}">
-                                            <img class="btn_preloader" src="{{asset('system/img/another_img/change_btn.svg')}}" alt="change_btn">
+                                            <img class="btn_preloader" src="{{asset('system/img/another_img/pencil-edit.svg')}}" alt="change_btn">
                                         </a>
                                     </div>
                                     <div class="col-4 list_category_name">
@@ -111,9 +113,13 @@
                                         <div class="select_tag">
                                             <select name="option_action" class="select">
                                                 <option disabled selected > - ДЕЙСТВИЯ - </option>
+                                                @if(Gate::allows('access_to_edit'))
                                                 <option>Активировать</option>
                                                 <option>Деактивировать</option>
+                                                @endif
+                                                @if(Gate::allows('access_to_delete'))
                                                 <option>Удалить</option>
+                                                @endif
                                             </select>
                                         </div>
                                         <div class="input_tag">

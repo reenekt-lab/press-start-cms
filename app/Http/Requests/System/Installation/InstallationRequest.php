@@ -25,7 +25,7 @@ class InstallationRequest extends FormRequest
     {
         return [
             'name_db'  => 'required',
-            'login_db'    => 'required'
+            'login_db' => 'required'
         ];
     }
 }

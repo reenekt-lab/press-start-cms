@@ -11,9 +11,6 @@
                     <a class="a_content detail_content" href="{{route('list_content',$id)}}">
                         Контент
                     </a>
-                    <a class="a_detail a_content a_category" href="javascript:void(0)">
-                        Редактирование
-                    </a>
                     <a class="a_detail" href="javascript:void(0)">
                         {{$arContent->title}}
                     </a>
@@ -49,7 +46,12 @@
                     </div>
                     <div class="user_creater detail_date_of_creation">
                         <p>
-                            Запись создана пользователем: {{$user->login}}
+                            Запись создана пользователем:
+                            @if(!empty($user->login))
+                                {{$user->login}}
+                            @else
+                                удален
+                            @endif
                         </p>
                     </div>
                     <div class="detail_date_of_creation">
@@ -69,7 +71,9 @@
                     <textarea name="content" id="editor">
                         {{old('content',$arContent->content)}}
                     </textarea>
+                    @if(Gate::allows('access_to_edit'))
                     <input class="btn btn-primary btn_preloader" type="submit" value="Сохранить">
+                    @endif
                 </form>
             </div>
         </div>

@@ -15,6 +15,7 @@
                                 </div>
                             </a>
                         </li>
+                        @if(Gate::allows('access_content'))
                         <li>
                             <div class="admin_content link_admin_page link_admin_page_content
                                      @if(Route::current()->getName()=='list_categories' ||
@@ -47,6 +48,8 @@
                                 </li>
                             </ul>
                         </li>
+                        @endif
+                        @if(Gate::allows('access_security'))
                         <li>
                             <div class="admin_account link_admin_page link_admin_page_security" style="color: #959595">
                                 Политка безопасности
@@ -84,6 +87,8 @@
                                 </li>
                             </ul>
                         </li>
+                        @endif
+                        @if(Gate::allows('access_setting'))
                         <li>
                             <a href="{{route('admin_setting')}}" class="link_admin_page link_admin_page_setting
                                 @if(Route::current()->getName()=='admin_setting')
@@ -95,6 +100,7 @@
                                 </div>
                             </a>
                         </li>
+                        @endif
                     </ul>
                 </div>
             </div>
@@ -112,9 +118,11 @@
 
                     {{--security point admin page--}}
                     @yield('from_add_user')
-                    @yield('list_roles')
-                    @yield('detail_role')
                     @yield('detail_user')
+
+                    @yield('list_roles')
+                    @yield('from_add_role')
+                    @yield('detail_role')
 
                     @yield('admin_account')
                     @yield('admin_setting')

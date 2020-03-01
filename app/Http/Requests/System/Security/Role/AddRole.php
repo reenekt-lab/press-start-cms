@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\SecurityPolicy;
+namespace App\Http\Requests\System\Security\Role;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdUser extends FormRequest
+class AddRole extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,7 @@ class UpdUser extends FormRequest
     public function rules()
     {
         return [
-            'login'=>'required',
-            'email'=>'email',
+            'nameRole'=>'required'
         ];
     }
 }

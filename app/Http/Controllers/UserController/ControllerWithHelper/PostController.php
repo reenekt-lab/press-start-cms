@@ -3,11 +3,7 @@
 namespace App\Http\Controllers\UserController\ControllerWithHelper;
 
 use App\Helpers\Helper;
-use App\Models\Category;
-use App\Models\Content;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {

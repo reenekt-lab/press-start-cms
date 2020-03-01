@@ -1,7 +1,7 @@
 @if(Auth::check())
 <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
     <div class="container-fluid">
-        @if(Gate::allows('select_role_user'))
+        @if(Gate::allows('access_admin_page'))
             <div class="row">
                 <div class="col-10 d-flex justify-content-center my-auto admin_header">
                     <a href="{{route('admin_main')}}">Админ страница</a>

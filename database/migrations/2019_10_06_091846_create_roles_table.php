@@ -17,6 +17,15 @@ class CreateRolesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->boolean('super_user');
+
+            $table->boolean('access_admin_page');
+            $table->boolean('access_content');
+            $table->boolean('access_security');
+            $table->boolean('access_setting');
+            $table->boolean('access_to_create');
+            $table->boolean('access_to_edit');
+            $table->boolean('access_to_delete');
+
             $table->timestamps();
         });
     }
