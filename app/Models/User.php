@@ -52,7 +52,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  */
 class User extends Authenticatable
 {
-    use Notifiable, SoftDeletes;
+//    use Notifiable, SoftDeletes;
 
     public function roles()
     {
@@ -61,12 +61,17 @@ class User extends Authenticatable
 
     public function category()
     {
-        return $this->belongsToMany(Category::class);
+        return $this->hasMany(Category::class);
     }
 
     public function group_security_policy()
     {
         return $this->belongsTo(GroupSecurityAccess::class);
+    }
+
+    public function content()
+    {
+        return $this->hasMany(Content::class);
     }
 
     /**

@@ -9,13 +9,6 @@ Route::group(['prefix'=>'installation','namespace'=>'System\Installation'],funct
 
 //endregion
 
-//region Если тема не выбрана
-
-//Если нет вообще шаблонов
-//Route::get('/null', ['uses'=>'IndexController@index','as'=>'qwerty']);
-
-//endregion
-
 //region AuthCustom
 
 //Регистрация юзера, кастомное (Просто нужно!)
@@ -43,17 +36,38 @@ Route::group(['prefix'=>'psc','middleware'=>'auth_admin_page','namespace'=>'Syst
     //Главное
     Route::get('/main',['uses'=>'AdminContent@show_main','as'=>'admin_main']);
 
-    //region Контент
-    Route::group(['prefix'=>'content'],function (){
+    //region Категории и Контент
+    Route::group(['prefix'=>'content/'],function (){
 
-        //Отображает список категорий
-        Route::get('/list_categories',['uses'=>'AdminContent@displayListCategories','as'=>'list_categories']);
+        //region Categories
+
+        //Отображает список главныйх категорий
+        Route::get('/list_main_categories',['uses'=>'AdminContent@displayListCategories','as'=>'list_categories']);
 
         //Отображает форму изменения категории
         Route::get('/update_category/{id}',['uses'=>'AdminContent@displayFormUpdateCategory','as'=>'update_category']);
 
         //Изменяет категорию
         Route::post('/update_category/{id}',['uses'=>'AdminContent@updateCategory','as'=>'update_category']);
+
+        //Отображении формы добавления категории
+        Route::get('/from_add_category',['uses'=>'AdminContent@displayFormAddCategory','as'=>'fromAddCategory']);
+
+        //Добавление категории
+        Route::post('/from_add_category',['uses'=>'AdminContent@addCategory','as'=>'addCategory']);
+
+        //Выболнить действия для главных категорий
+        Route::post('/list_main_categories',['uses'=>'AdminContent@actionList','as'=>'actionList']);
+
+        //Отображение подконтента
+        Route::get('/sub_content/{id}',['uses'=>'AdminContent@displayListSubContent','as'=>'list_sub_content']);
+
+        //Выболнить действия для подконтента
+        Route::post('/sub_content/',['uses'=>'AdminContent@actionList','as'=>'actionList']);
+
+        //endregion
+
+        //region Content
 
         //Отображает список контента в зависимости от категории
         Route::get('/list_elements/{id}',['uses'=>'AdminContent@displayAllContent','as'=>'list_content']);
@@ -70,14 +84,10 @@ Route::group(['prefix'=>'psc','middleware'=>'auth_admin_page','namespace'=>'Syst
         //Сохранение изменения контента в детальной странице
         Route::post('/detail_content/update/{idCategory}/{idContent}',['uses'=>'AdminContent@updateContent','as'=>'update_detail']);
 
-        //Добавление категории
-        Route::post('/add_content/add_category',['uses'=>'AdminContent@addCategory','middleware'=>'validationMiddleware','as'=>'addCategory']);
-
         //Выболнить действия с контентом
         Route::post('/list_elements/action/{id}',['uses'=>'AdminContent@actionListElements','as'=>'actionListElements']);
 
-        //Выболнить действия с категориями
-        Route::post('/list_categories/action/',['uses'=>'AdminContent@actionListCategories','as'=>'actionListCategories']);
+        //endregion
     });
     //endregion
 

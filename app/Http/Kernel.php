@@ -66,7 +66,6 @@ class Kernel extends HttpKernel
         'validationMiddleware'=>\App\Http\Middleware\ValidationMiddleware::class,
         'loginCustom'=>\App\Http\Middleware\System\AuthCustom\LoginCustom::class,
         'registrationCustom'=>\App\Http\Middleware\System\AuthCustom\RegistrationCustom::class,
-        'nullTemplateMiddleware'=>\App\Http\Middleware\System\NullTemplate\MiddleWareNullTemplate::class,
         'installationCms'=>\App\Http\Middleware\System\Installation\InstallationCms::class,
     ];
 

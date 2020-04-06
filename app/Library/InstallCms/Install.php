@@ -78,6 +78,7 @@ class Install
         $user->password=\Hash::make($new_request['password']);
         $user->active=true;
         $user->main_user=true;
+
         $user->save();
 
         $role=new Role();
@@ -90,6 +91,7 @@ class Install
         $role->access_to_create=true;
         $role->access_to_edit=true;
         $role->access_to_delete=true;
+
         $role->save();
 
         $user=User::find($user->id);
@@ -103,11 +105,11 @@ class Install
     public static function setDefaultContent()
     {
         //Вставка значений в таблицу "categories"
-        DB::insert('INSERT INTO `categories` (`id`, `name`, `active`, `user_id`, `created_at`, `updated_at`) VALUES
-        (1, \'title of banner\', 1, 1, \'2020-02-26 14:08:06\', \'2020-02-26 14:08:06\'),
-        (2, \'first_block\', 1, 1, \'2020-02-26 14:09:13\', \'2020-02-26 14:09:13\'),
-        (3, \'second_block\', 1, 1, \'2020-02-26 14:09:30\', \'2020-02-26 14:09:30\'),
-        (4, \'Quotes of great men\', 1, 1, \'2020-02-26 14:10:41\', \'2020-02-26 14:10:41\')');
+        DB::insert('INSERT INTO `categories` (`id`, `name`, `active`,`parent_id`, `user_id`, `created_at`, `updated_at`) VALUES
+        (1, \'title of banner\', 1, null, 1, \'2020-02-26 14:08:06\', \'2020-02-26 14:08:06\'),
+        (2, \'first_block\', 1, null, 1, \'2020-02-26 14:09:13\', \'2020-02-26 14:09:13\'),
+        (3, \'second_block\', 1, null, 1, \'2020-02-26 14:09:30\', \'2020-02-26 14:09:30\'),
+        (4, \'Quotes of great men\', 1, null, 1, \'2020-02-26 14:10:41\', \'2020-02-26 14:10:41\')');
 
         //Вставка данных в таблицу "contents"
         DB::insert('INSERT INTO `contents` (`id`, `title`, `content`, `active`, `user_id`, `created_at`, `updated_at`) VALUES
@@ -119,19 +121,12 @@ class Install
         (6, \'State\', \'<p>everything for the state is nothing outside the state</p>\', 1, 1, \'2020-02-26 14:12:52\', \'2020-02-26 14:12:52\')');
 
         //Вставка значений в таблицу "category_content"
-        Db::insert('INSERT INTO `category_content` (`id`, `category_id`, `content_id`, `created_at`, `updated_at`) VALUES
-        (1, 1, 1, NULL, NULL),
-        (2, 2, 2, NULL, NULL),
-        (3, 3, 3, NULL, NULL),
-        (4, 4, 4, NULL, NULL),
-        (5, 4, 5, NULL, NULL),
-        (6, 4, 6, NULL, NULL)');
-
-        //Вставка значений в таблицу "category_user"
-        DB::insert('INSERT INTO `category_user` (`id`, `user_id`, `category_id`, `created_at`, `updated_at`) VALUES
-        (1, 1, 1, NULL, NULL),
-        (2, 1, 2, NULL, NULL),
-        (3, 1, 3, NULL, NULL),
-        (4, 1, 4, NULL, NULL)');
+        Db::insert('INSERT INTO `category_content` (`id`, `category_id`, `content_id`) VALUES
+        (1, 1, 1),
+        (2, 2, 2),
+        (3, 3, 3),
+        (4, 4, 4),
+        (5, 4, 5),
+        (6, 4, 6)');
     }
 }

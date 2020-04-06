@@ -295,7 +295,7 @@ body{
     background-color: white;
     border-radius: 5px;
     padding: 18px;
-    box-shadow: 0px 0px 34px -12px rgba(0,0,0,0.75);
+    box-shadow: 0 0 34px -12px rgba(0,0,0,0.75);
 }
 
 .bg_detail input[type="password"]{
@@ -379,6 +379,25 @@ body{
     border-top: 1px solid #cbcbcb;
     display: flex;
     align-items: center;
+}
+
+.categoryCol{
+    position: relative;
+}
+
+.categoryCol a{
+    margin-left: 30px;
+}
+
+.categoryCol :before{
+    content: '';
+    background-image: url('../img/another_img/folder.svg');
+    background-size: contain;
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    top: 14px;
+    left: 15px;
 }
 
 .list_category_tool input[type='checkbox'], .main_checkbox_admin_page{
@@ -465,6 +484,40 @@ body{
 
 .list_category_change_btn img{
     width: 20px;
+    transition: .2s;
+}
+
+.list_category_change_btn img:hover{
+    filter: brightness(0.5);
+}
+
+.wrapBtnAddCategoryOrContent  a{
+    background-color: #3490dc;
+    color: white;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 182px;
+    height: 43px;
+    transition: .5s;
+    margin-right: 10px;
+}
+
+.wrapBtnAddCategoryOrContent  a:hover{
+    text-decoration: none;
+    background-color: #2e73ad;
+    color: white;
+}
+/*endregion*/
+
+/*region From Category*/
+.selectAddCategory select{
+    width: 100%;
+}
+
+.addCategoryFrom input{
+    width: 37%;
 }
 /*endregion*/
 
@@ -17814,7 +17867,8 @@ h3 {
     font-size: 16px;
 }
 
-.input_installation input[type='text']{
+.input_installation input[type='text'],
+.input_installation input[type='password']{
     border-radius: 5px;
     padding-left: 5px;
     padding-right: 5px;

@@ -112,6 +112,9 @@
                     @yield('admin_content')
                     @yield('category_list')
                     @yield('detail_category')
+                    @yield('form_add_category')
+                    @yield('sub_content')
+
                     @yield('list_contents')
                     @yield('from_add_content')
                     @yield('detail_content')

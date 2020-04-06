@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\System\Security\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-//class AddUserRequest extends FormRequest
 class AddUserRequest extends FormRequest
 {
     /**
@@ -25,10 +24,10 @@ class AddUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'login'=>'required | unique:users',
-            'email'=>'required | email | unique:users',
-            'password'=>'required | confirmed | min:6',
-            'select_role'=>'required'
+            'login'=>'required|unique:users',
+            'email'=>'required|email',
+            'password'=>'required|confirmed|min:6',
+            'select_role'=>'required',
         ];
     }
 }

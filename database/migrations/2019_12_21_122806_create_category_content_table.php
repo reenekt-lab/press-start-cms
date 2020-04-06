@@ -21,8 +21,6 @@ class CreateCategoryContentTable extends Migration
 
             $table->bigInteger('content_id')->unsigned();
             $table->foreign('content_id')->references('id')->on('contents');
-
-            $table->timestamps();
         });
     }
 
