@@ -115,3 +115,98 @@ $(document).ready(function () {
     });
     // endregion
 });
+
+//Список дополнительных категорий
+new Vue({
+    el:'.rowListAdditionalProperty',
+    data:{
+        listPropertiesName:[],
+        listPropertiesId:[],
+        htmlNewRow:'',
+        id:1
+    },
+    mounted:function()
+    {
+        if(this.$refs.hiddenListPropertyName)
+        {
+            this.getListPropertyName();
+            this.getListPropertyId();
+
+            this.$refs.maxIdJsProperty?this.id=this.$refs.maxIdJsProperty.value:'';
+        }
+    },
+    methods:{
+        addRow:function ()
+        {
+            var newDiv=document.createElement('div');
+
+            newDiv.className='row rowListProperty';
+            newDiv.innerHTML='' +
+                '<div class="col-md-3 colListProperty">' +
+                    '<input type="text" name="JSpropertyName_'+this.id+'">' +
+                '</div>'+
+                '<div class="col-md-3 colListProperty">'+
+                    this.htmlSelect()+
+                '</div>'+
+                '<div class="col-md-1 d-flex align-items-center colListProperty">' +
+                    '<input type="checkbox" name="JSactive_'+this.id+'" checked>'+
+                '</div>'+
+                '<div class="col-md-3 colListProperty">' +
+                    '<input type="text" name="JSsymbolCode_'+this.id+'">'+
+                '</div>'+
+                '<div class="col-md-1 colListProperty"></div>'+
+                '<div class="col-md-1"></div>';
+
+            document.querySelector('.wrapAdditionalPropertyJs').appendChild(newDiv);
+
+            this.htmlNewRow=document.querySelector('.wrapAdditionalPropertyJs').innerHTML;
+
+            this.id++;
+        },
+
+        htmlSelect:function (listProperties)
+        {
+            var htmlSelect='<select name="JSlistProperties_'+this.id+'">';
+            var i=0;
+
+            this.listPropertiesName.forEach(element=>{
+                htmlSelect+='<option value="'+this.listPropertiesId[i]+'">'+element+'</option>';
+                i++;
+            });
+
+            htmlSelect+='</select>';
+
+            return htmlSelect;
+        },
+
+        getListPropertyName:function ()
+        {
+            var A=this.$refs.hiddenListPropertyName.innerText.split(/\s/).join('');
+            var B=A.split('|');
+
+            B.pop();
+
+            B.forEach(element=>{
+                this.listPropertiesName.push(element);
+            });
+        },
+
+        getListPropertyId:function ()
+        {
+            var A=this.$refs.hiddenListPropertyId.innerText.split(/\s/).join('');
+            var B=A.split('|');
+
+            B.pop();
+
+            B.forEach(element=>{
+                this.listPropertiesId.push(element);
+            });
+        },
+
+        displayPreloader:function ()
+        {
+            document.querySelector('.bg_fix_preloader').style.display='flex';
+            document.querySelector('body').style.overflow='hidden';
+        }
+    }
+});

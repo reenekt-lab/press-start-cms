@@ -90,15 +90,29 @@
                         @endif
                         @if(Gate::allows('access_setting'))
                         <li>
-                            <a href="{{route('admin_setting')}}" class="link_admin_page link_admin_page_setting
+                            <div style="color: #959595" class="setting link_admin_page link_admin_page_setting
                                 @if(Route::current()->getName()=='admin_setting')
                                     click
                                     selected_setting_amin_page
                                 @endif">
-                                <div class="setting">
                                     Настройки
-                                </div>
-                            </a>
+                            </div>
+                            <ul class="spisok_admin_setting display_submenu_admin_setting">
+                                <li class="pointSubmenuSetting">
+                                    <a href="{{route('setting_list_main_category')}}">
+                                        Дополнительные поля
+                                    </a>
+                                </li>
+                                <li class="pointSubmenuSetting">
+                                    <a href="{{route('admin_setting')}}" class="
+                                        @if(Route::current()->getName()=='admin_setting')
+                                            click
+                                            selected_setting_amin_page
+                                        @endif">
+                                        Список тем
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                         @endif
                     </ul>
@@ -129,6 +143,10 @@
 
                     @yield('admin_account')
                     @yield('admin_setting')
+
+                    {{--settings--}}
+                    @yield('settingListSuperCategories')
+                    @yield('formAddProperty')
                 </div>
             </div>
         </div>

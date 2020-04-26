@@ -42,7 +42,7 @@ Route::group(['prefix'=>'psc','middleware'=>'auth_admin_page','namespace'=>'Syst
         //region Categories
 
         //Отображает список главныйх категорий
-        Route::get('/list_main_categories',['uses'=>'AdminContent@displayListCategories','as'=>'list_categories']);
+        Route::get('/list_main_categories',['uses'=>'AdminContent@displayListMainCategories','as'=>'list_categories']);
 
         //Отображает форму изменения категории
         Route::get('/update_category/{id}',['uses'=>'AdminContent@displayFormUpdateCategory','as'=>'update_category']);
@@ -51,10 +51,10 @@ Route::group(['prefix'=>'psc','middleware'=>'auth_admin_page','namespace'=>'Syst
         Route::post('/update_category/{id}',['uses'=>'AdminContent@updateCategory','as'=>'update_category']);
 
         //Отображении формы добавления категории
-        Route::get('/from_add_category',['uses'=>'AdminContent@displayFormAddCategory','as'=>'fromAddCategory']);
+        Route::get('/from_add_category/{id?}',['uses'=>'AdminContent@displayFormAddCategory','as'=>'fromAddCategory']);
 
         //Добавление категории
-        Route::post('/from_add_category',['uses'=>'AdminContent@addCategory','as'=>'addCategory']);
+        Route::post('/from_add_category/{id?}',['uses'=>'AdminContent@addCategory','as'=>'addCategory']);
 
         //Выболнить действия для главных категорий
         Route::post('/list_main_categories',['uses'=>'AdminContent@actionList','as'=>'actionList']);
@@ -143,7 +143,26 @@ Route::group(['prefix'=>'psc','middleware'=>'auth_admin_page','namespace'=>'Syst
     //region Настройки
     Route::get('/setting',['uses'=>'AdminContent@show_setting','as'=>'admin_setting']);
 
+    //region Дополнительные поля
+
+    //Отображает список главных категорий
+    Route::get('/listSuperCategories',['uses'=>'AdminSetting@displayListMainCategoriesSetting','as'=>'setting_list_main_category']);
+
+    //Отображает форму добавления новых свойств
+    Route::get('/fromProperty/{id}',['uses'=>'AdminSetting@displayFormAddProperty','as'=>'display_form_add_property']);
+
+    //Добавление свойства
+    Route::post('/fromProperty/{id}',['uses'=>'AdminSetting@addProperty','as'=>'add_property']);
+
+    //endregion
+
+    //region Список тем
+
+    //Отображает список тем
     Route::post('/setting/theme/change', 'AdminContent@change_theme')->name('admin.settings.change_theme');
+
+    //endregion
+
     //endregion
 });
 //endregion

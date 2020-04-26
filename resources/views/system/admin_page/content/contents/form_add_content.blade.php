@@ -39,6 +39,18 @@
                     Содержимое
                 </p>
                 <textarea name="content" id="editor" cols="30" rows="30"></textarea>
+
+                @if($arSetAdditionalProperties!=null)
+                    @foreach($arSetAdditionalProperties as $arItem)
+                        <p class="add_content_title">
+                            {{$arItem->name}}
+                        </p>
+                        @if($arItem->listAdditionalProperty->type=='input')
+                            <input type="text" name="additionalProperty_{{$arItem->id}}" value="{{old('additionalProperty_'.$arItem->id,$arItem->value)}}">
+                        @endif
+                    @endforeach
+                @endif
+
                 <input class="btn btn-primary btn_preloader" type="submit" value="Сохранить">
             </form>
         </div>

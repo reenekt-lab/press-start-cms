@@ -17,7 +17,7 @@
                     </p>
                     @if(Gate::allows('access_to_create'))
                         <div class="wrapBtnAddCategoryOrContent">
-                            <a href="{{route('fromAddCategory')}}">
+                            <a href="{{route('fromAddCategory',$id)}}">
                                 Добавить категорию
                             </a>
                             <a href="{{route('from_add_content',$id)}}">
@@ -42,9 +42,7 @@
                     <div class="col-1">
                         <input type="checkbox" class="main_checkbox_admin_page">
                     </div>
-                    <div class="col-1">
-
-                    </div>
+                    <div class="col-1"></div>
                     <div class="col-4">
                         <p>
                             Название

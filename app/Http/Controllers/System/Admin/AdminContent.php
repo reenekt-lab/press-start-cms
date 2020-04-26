@@ -6,9 +6,11 @@ use App\Http\Requests\System\Category\AddCategory;
 use App\Http\Requests\System\Category\UpdateCategory;
 use App\Http\Requests\ValidationRequest;
 use App\Library\ActionList\ActionContentPage;
+use App\Library\WorkWithSetAdditionalPropery\InteractSetAdditionalProperty;
 use App\Models\Category;
 use App\Models\Content;
 use App\Models\All_themes;
+use App\Models\StorageValSetAdditionalProp;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -27,11 +29,9 @@ class AdminContent extends Controller
         return view('system.admin_page.admin_main');
     }
 
-    public function displayFormAddCategory()
+    public function displayFormAddCategory($id=null)
     {
-        $arCategories=Category::orderBy('name','asc')->get();
-
-        return view('system.admin_page.content.categories.display_from_add_category',compact('arCategories'));
+        return view('system.admin_page.content.categories.display_from_add_category',compact('id'));
     }
 
     public function displayListSubContent($id)
@@ -45,9 +45,9 @@ class AdminContent extends Controller
         return view('system.admin_page.content.list_sub_content',compact('arSubCategory','arContent','id'));
     }
 
-    public function displayListCategories()
+    public function displayListMainCategories()
     {
-        $aRcategories = Category::where('parent_id',null)->orderBy('name')->get();
+        $aRcategories = Category::where('super_category',true)->orderBy('name')->get();
 
         return view('system.admin_page.content.mainCategories.list_main_categories', compact('aRcategories'));
     }
@@ -173,23 +173,21 @@ class AdminContent extends Controller
         return view('system.admin_page.content.contents.list_content', compact('aRSelected_category','id'));
     }
 
-    public function addCategory(AddCategory $request)
+    public function addCategory(AddCategory $request,$id=null)
     {
-        //Сохраняет новую категорию
-        $category=new Category();
-        $category->name=$request->input('name_category');
-        $category->active=true;
-        $category->parent_id=$request->input('parent_category');
-        $category->user_id=Auth::id();
+        Category::addCategory($request->except('_token'),$id);
 
-        $category->save();
-
-        return redirect()->route('list_categories');
+        if($id)
+            return redirect()->route('list_sub_content',$id);
+        else
+            return redirect()->route('list_categories');
     }
 
     public function displayFormContent($id)
     {
-        return view('system.admin_page.content.contents.form_add_content',compact('id'));
+        $arSetAdditionalProperties=InteractSetAdditionalProperty::getSetAdditionalProperty($id);
+
+        return view('system.admin_page.content.contents.form_add_content',compact('id','arSetAdditionalProperties'));
     }
 
     public function addContent(ValidationRequest $request,$id)
@@ -204,36 +202,43 @@ class AdminContent extends Controller
 
         $category->content()->save($content);
 
+        InteractSetAdditionalProperty::saveValueAdditionalProperties($request->except('_token'),$id, $content->id);
+
         return redirect()->route('list_sub_content',$id);
     }
 
     public function detailContent($idCategory,$idContent)
     {
         $id=$idCategory;
-        $arContent=Content::where('id',$idContent)->first();
+        $arContent=Content::find($idContent);
 
         //Выбирает юзера, который создал данную запись
         $user=$arContent->user;
 
-        return view('system.admin_page.content.contents.detail_content',compact('arContent','id','user'));
+        //Получаем коллекцию набора свойств
+        $arSetAdditionalProperties=InteractSetAdditionalProperty::getSetAdditionalProperty($id);
+
+        //Получаем коллекцию значений свойств
+        $arPropVal=Content::find($idContent)->contentPropVal;
+
+        return view('system.admin_page.content.contents.detail_content',compact(
+            'arContent',
+            'id',
+            'user',
+            'arSetAdditionalProperties',
+            'arPropVal'
+            ));
     }
 
     public function updateContent(ValidationRequest $request, $idCategory, $idContent)
     {
-        if($request->has('checkbox'))
-        {
-            Content::where('id',$idContent)->update([
-                'title'  =>$request->input('title'),
-                'active'  =>true,
-                'content'=>$request->input('content')
-            ]);
-        }else{
-            Content::where('id',$idContent)->update([
-                'title'  =>$request->input('title'),
-                'active'  =>false,
-                'content'=>$request->input('content')
-            ]);
-        }
+        Content::where('id',$idContent)->update([
+            'title'  =>$request->input('title'),
+            'active'  =>$request->has('checkbox')? true : false,
+            'content'=>$request->input('content')
+        ]);
+
+        InteractSetAdditionalProperty::updateValProp($request->except('_token'),$idContent, $idCategory);
 
         return redirect()->route('list_sub_content',$idCategory);
     }

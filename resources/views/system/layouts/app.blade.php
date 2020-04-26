@@ -15,31 +15,31 @@
     {!! Helper::systemSet() !!}
 
 </head>
+    <body>
+        {{--отображение меню для перехода в админку--}}
+        @include(\App\Helpers\Helper::getAdminMenu())
 
-<body>
-    {{--отображение меню для перехода в админку--}}
-    @include(\App\Helpers\Helper::getAdminMenu())
+        {{--Регистрация--}}
+        @yield('registrationForm')
 
-    {{--Регистрация--}}
-    @yield('registrationForm')
+        {{--Авторизация--}}
+        @yield('loginForm')
 
-    {{--Авторизация--}}
-    @yield('loginForm')
+        <!--Админка-->
+        @yield('admin_page')
 
-    <!--Админка-->
-    @yield('admin_page')
+        @yield('content')
 
-    @yield('content')
+        {{--Если нет тем--}}
+        @yield('null_template')
 
-    {{--Если нет тем--}}
-    @yield('null_template')
-
-    {{--установка бд--}}
-    @yield('installation')
+        {{--установка бд--}}
+        @yield('installation')
 
 
-    <!-- Plugins external assets -->
-    {!! (new \App\Library\PluginManagers\ExternalAsset\ExternalAssetPluginManager)->renderInEdnOfBody() !!}
-</body>
+        <!-- Plugins external assets -->
+        {!! (new \App\Library\PluginManagers\ExternalAsset\ExternalAssetPluginManager)->renderInEdnOfBody() !!}
 
+        {{--vue.js--}}
+    </body>
 </html>

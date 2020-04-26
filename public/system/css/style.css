@@ -21,6 +21,7 @@ body{
     display: flex;
     align-items: center;
     position: relative;
+    transition: .3s;
 }
 
 .admin_content{
@@ -49,6 +50,11 @@ body{
     padding-left: 45px;
     transition: .5s;
     position: relative;
+    cursor: pointer;
+}
+
+.setting:hover{
+    color:white!important;
 }
 
 .link_admin_page:hover{
@@ -177,6 +183,7 @@ body{
 
 .add_content_from p{
     margin-bottom: 10px;
+    margin-left: 2px;
 }
 
 .error_list{
@@ -738,6 +745,35 @@ body{
 
 .selected_setting_amin_page:before{
     background-image: url('../img/selected/settings_admin_page.svg');
+}
+
+.spisok_admin_setting{
+    height: 0;
+    opacity: 0;
+    margin-top: 0;
+    margin-bottom: 0!important;
+    margin-left: 46px;
+    transition: .3s;
+    cursor: pointer;
+}
+
+.pointSubmenuSetting:hover a{
+    color:white;
+}
+
+.setting:after{
+    content: "";
+    position: absolute;
+    background-image: url('../img/another_img/arrow_dowm.svg');
+    background-repeat: no-repeat;
+    height: 15px;
+    width: 13px;
+    transform: rotate(0deg);
+    right: 40px;
+    top: 15px;
+    transition: .5s;
+    background-position: center;
+    background-size: contain;
 }
 /*endregion*/
 
@@ -17808,6 +17844,12 @@ h3 {
     opacity: 1;
 }
 
+.display_submenu_admin_setting{
+    margin-bottom: 10px!important;
+    height: auto;
+    opacity: 1;
+}
+
 .change_opacity{
     opacity: 0;
 }
@@ -17918,7 +17960,9 @@ h3 {
 
 /*region media*/
 @media (max-width: 1999px) {
-    .admin_account:after, .admin_content:after{
+    .admin_account:after,
+    .admin_content:after,
+    .setting:after{
         right: 8%;
     }
 }
@@ -17927,7 +17971,7 @@ h3 {
 /*region preloader*/
 .bg_fix_preloader{
     display: none;
-    position: absolute;
+    position: fixed;
     width: 100%;
     height: 105vh;
     top: 0;
@@ -17973,6 +18017,98 @@ h3 {
     100% {
         transform: rotate(360deg);
     }
+}
+/*endregion*/
+
+/*region additionalProperty*/
+.rowTitleListProperty{
+    margin: 0;
+}
+
+.rowTitleListProperty p{
+    font-weight: bold;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.rowTitleListProperty .colTitleListProperty:first-child{
+    padding-left: 0;
+}
+
+.rowTitleListProperty .colTitleListProperty:last-child {
+    padding-right: 0;
+}
+
+.rowListProperty p{
+    font-weight: unset;
+}
+
+.rowListProperty{
+    margin: 0;
+    padding: 17px 0;
+}
+
+.rowListProperty .colListProperty:first-child{
+    padding-left: 0;
+}
+
+.rowListProperty .colListProperty:last-child{
+    padding-right: 0;
+}
+
+.rowListProperty{
+    border-top: 1px solid #cbcbcb;
+}
+
+.rowListProperty input{
+    border-radius: 5px;
+    border: 1px solid #cbcbcb;
+    width: 100%;
+    padding: 0 5px;
+}
+
+.rowListProperty select{
+    width: 100%;
+    height: 27px;
+    border-radius: 5px;
+    border: 1px solid #cbcbcb;
+}
+
+.btnSaveAdditionalProperty{
+    background-color: #3490dc;
+    color: white;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 40px;
+    transition: .5s;
+    margin-right: 10px;
+    border: none;
+}
+
+.btnSaveAdditionalProperty:hover{
+    background-color: #2e73ad;
+}
+
+.btnAddRowAdditionalProperty{
+    background-color: green;
+    width: 150px;
+    border-radius: 5px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: -webkit-linear-gradient(bottom, #d7e3e7, #fff)!important;
+    cursor: pointer;
+    transition: .3s;
+    margin-top: 25px;
+}
+
+.btnAddRowAdditionalProperty:hover{
+    background: -webkit-linear-gradient(top, #f8f8f9, #d0d0d1)!important;
 }
 /*endregion*/
 

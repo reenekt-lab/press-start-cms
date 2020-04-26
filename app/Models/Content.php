@@ -40,5 +40,10 @@ class Content extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function contentPropVal()
+    {
+        return $this->hasMany(StorageValSetAdditionalProp::class,'content_id');
+    }
+
     protected $fillable=['title','active','content','user_id'];
 }

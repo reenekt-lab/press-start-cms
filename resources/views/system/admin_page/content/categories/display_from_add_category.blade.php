@@ -1,10 +1,10 @@
 @extends('system.admin_page.admin')
 
 @section('form_add_category')
-    <form class="add_content_from addCategoryFrom" method="post" action="{{route('addCategory')}}">
+    <form class="add_content_from addCategoryFrom" method="post" action="{{route('addCategory',$id)}}">
         @csrf
         <div class="row">
-            <div class="col-md-9">
+            <div class="col-12">
                 <div class="bg_detail">
                     <div class="wrap_chain">
                         <a class="a_category" href="{{route('list_categories')}}">
@@ -37,17 +37,6 @@
                     @endif
                 </div>
             </div>
-            <div class="col-md-3 bg_detail selectAddCategory">
-                <p>
-                    Родительские категории
-                </p>
-                <select name="parent_category">
-                    <option selected disabled></option>
-                    @foreach($arCategories as $arItem)
-                        <option value="{{$arItem->id}}">{{$arItem->name}}</option>
-                    @endforeach
-                </select>
-            </div>
-    </div>
+        </div>
     </form>
 @endsection

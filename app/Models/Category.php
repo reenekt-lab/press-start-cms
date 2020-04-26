@@ -50,5 +50,24 @@ class Category extends Model
         return $this->hasMany(Category::class,'parent_id');
     }
 
-    protected $fillable=['name','active','parent_id','user_id'];
+    public function set_additional_property_category()
+    {
+        return $this->hasMany(SetAdditionalProperty::class,'property_id');
+    }
+
+    protected $fillable=['name','active', 'super_category','parent_id','user_id'];
+
+    public static function addCategory($newRequest,$id)
+    {
+        //Сохраняет новую категорию
+        $category=new Category();
+        $category->name=$newRequest['name_category'];
+        $category->active=true;
+        $category->super_category=$id?null:true;
+        $category->parent_id=$id?$id:null;
+        $category->user_id=\Auth::id();
+
+        $category->save();
+    }
+
 }

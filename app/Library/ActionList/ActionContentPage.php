@@ -4,6 +4,8 @@ namespace App\Library\ActionList;
 
 use App\Models\Category;
 use App\Models\Content;
+use App\Models\SetAdditionalProperty;
+use App\Models\StorageValSetAdditionalProp;
 
 class ActionContentPage
 {
@@ -19,7 +21,6 @@ class ActionContentPage
     {
         $category=[];
         $content=[];
-
         foreach ($newRequest as $key=>$value)
         {
             $pieces=explode('_',$key);
@@ -30,7 +31,6 @@ class ActionContentPage
             else if($pieces[0]=='content')
                 array_push($content,$pieces[1]);
         }
-
 
         if($newRequest['option_action']=='Активировать')
         {
@@ -53,8 +53,7 @@ class ActionContentPage
                     Category::where('id',$arItem)->update(['active'=>true]);
                 }
             }
-        }
-        elseif($newRequest['option_action']=='Деактивировать')
+        } elseif($newRequest['option_action']=='Деактивировать')
         {
             //Если массив $content не путсой
             if(sizeof($content))
@@ -75,8 +74,7 @@ class ActionContentPage
                     Category::where('id',$arItem)->update(['active'=>false]);
                 }
             }
-        }
-        else
+        } else
         {
             if(sizeof($category)>0)
             {
@@ -87,7 +85,6 @@ class ActionContentPage
             {
                 foreach ($content as $arItem)
                 {
-
                     $content=Content::find($arItem)->category;
 
                     //Удаляем строку в таблице "category_content"
@@ -96,6 +93,8 @@ class ActionContentPage
                         $content_id=Content::find($arItem)->id;
                         $arCategory->content()->detach($content_id);
                     }
+
+                    StorageValSetAdditionalProp::where('content_id',$arItem)->delete();
 
                     Content::destroy($arItem);
                 }
@@ -108,7 +107,6 @@ class ActionContentPage
      */
     public static function getArraySubCategory($category)
     {
-
         //Юзер мог выбрать 2 и больше категории
         //И мы проходим по полученному массиву, где хранятся выбранные категории
         foreach ($category as $parentCategory)
@@ -122,7 +120,7 @@ class ActionContentPage
             //Получаем коллекцию родительской категории
             $var1=Category::find($parentCategory);
 
-            //Получаем коллецкию подкатегорий и проходим по полученныи дочерним подкатегориям
+            //Получаем коллецкию подкатегорий, проходим по полученныи дочерним подкатегориям
             //чтобы узнать, есть ли у этих подкатегорий свои подкатегории
             foreach ($var1->sub_category as $arItem)
             {
@@ -178,6 +176,8 @@ class ActionContentPage
 
             ActionContentPage::deleteContentCategoryTable($arContent,$arItem);
 
+            SetAdditionalProperty::where('category_id',$arItem)->delete();
+
             //Удаляет категорию
             Category::destroy($arItem);
         }
@@ -209,9 +209,10 @@ class ActionContentPage
             $content_id = Content::find($contentId)->id;
             $category->content()->detach($content_id);
 
+            StorageValSetAdditionalProp::where('content_id',$content_id)->delete();
+
             //Удаляем контент
             Content::destroy($content_id);
         }
     }
 }
-

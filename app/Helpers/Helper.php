@@ -27,9 +27,10 @@ class Helper
             'system_style'=>'<link rel="stylesheet" href='.asset('system/css/bootstrap.css').'>
                              <link rel="stylesheet" href='.asset('system/css/style.css').'>',
 
-            'script_app'=>'<script src='.asset('system/js/app.js').'></script>
-                           <script src='.asset('system/js/systems_script.js').'></script>
-                           <script src='.asset('system/lib/ckeditor.js').'></script>',
+            'script_app'=>'<script defer src='.asset('system/js/app.js').'></script>
+                           <scipt  defer src='.asset('system/lib/vue.min.js').'></scipt>
+                           <script defer src='.asset('system/js/systems_script.js').'></script>
+                           <script defer src='.asset('system/lib/ckeditor.js').'></script>',
         );
 
         return $arLink['system_style'].$arLink['script_app'];

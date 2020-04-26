@@ -105,11 +105,11 @@ class Install
     public static function setDefaultContent()
     {
         //Вставка значений в таблицу "categories"
-        DB::insert('INSERT INTO `categories` (`id`, `name`, `active`,`parent_id`, `user_id`, `created_at`, `updated_at`) VALUES
-        (1, \'title of banner\', 1, null, 1, \'2020-02-26 14:08:06\', \'2020-02-26 14:08:06\'),
-        (2, \'first_block\', 1, null, 1, \'2020-02-26 14:09:13\', \'2020-02-26 14:09:13\'),
-        (3, \'second_block\', 1, null, 1, \'2020-02-26 14:09:30\', \'2020-02-26 14:09:30\'),
-        (4, \'Quotes of great men\', 1, null, 1, \'2020-02-26 14:10:41\', \'2020-02-26 14:10:41\')');
+        DB::insert('INSERT INTO `categories` (`id`, `name`, `active`,`super_category`,`parent_id`, `user_id`, `created_at`, `updated_at`) VALUES
+        (1, \'title of banner\', 1, 1, null, 1, \'2020-02-26 14:08:06\', \'2020-02-26 14:08:06\'),
+        (2, \'first_block\', 1, 1, null, 1, \'2020-02-26 14:09:13\', \'2020-02-26 14:09:13\'),
+        (3, \'second_block\', 1, 1, null, 1, \'2020-02-26 14:09:30\', \'2020-02-26 14:09:30\'),
+        (4, \'Quotes of great men\', 1, 1, null, 1, \'2020-02-26 14:10:41\', \'2020-02-26 14:10:41\')');
 
         //Вставка данных в таблицу "contents"
         DB::insert('INSERT INTO `contents` (`id`, `title`, `content`, `active`, `user_id`, `created_at`, `updated_at`) VALUES
@@ -128,5 +128,9 @@ class Install
         (4, 4, 4),
         (5, 4, 5),
         (6, 4, 6)');
+
+        //Вставка значкний в таблицу "list_additional_properties"
+        DB::insert('INSERT INTO `list_additional_properties` (`id`, `name`, `type`, `created_at`, `updated_at`) VALUES
+        (1, \'строка\', \'input\', NULL, NULL)');
     }
 }

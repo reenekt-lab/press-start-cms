@@ -71,6 +71,38 @@
                     <textarea name="content" id="editor">
                         {{old('content',$arContent->content)}}
                     </textarea>
+
+                    @if($arSetAdditionalProperties!=null)
+                        @php
+                        $i=0;
+                        @endphp
+                        @foreach($arSetAdditionalProperties as $arItem)
+                            <p class="add_content_title">
+                                {{$arItem->name}}
+                            </p>
+                            @if($arItem->listAdditionalProperty->type=='input')
+                                <!--Проверяем, есть ли у данного контента свойства с значением-->
+                                @if(sizeof($arPropVal)>0 && isset($arPropVal[$i]))
+                                    <input
+                                        type="text"
+                                        name="additionalProperty_{{$arItem->id}}"
+                                        value="{{old('additionalProperty_'.$arItem->id,$arItem->id==$arPropVal[$i]->set_additional_prop_id?$arPropVal[$i]->value:'')}}"
+                                    >
+                                @else
+                                    <input
+                                        type="text"
+                                        name="additionalProperty_{{$arItem->id}}"
+                                        value="{{old('additionalProperty_'.$arItem->id)}}"
+                                    >
+                                @endif
+                            @endif
+
+                            @php
+                                $i++
+                            @endphp
+                        @endforeach
+                    @endif
+
                     @if(Gate::allows('access_to_edit'))
                     <input class="btn btn-primary btn_preloader" type="submit" value="Сохранить">
                     @endif
