@@ -22,7 +22,12 @@ class SecurityPolicy extends Controller
     public function displayFormUser()
     {
         $arRoles = Role::all(['id', 'name']);
-        return view('system.admin_page.security_policy.users.form_add_user', compact('arRoles'));
+
+        $arChain=[
+            '/'=>'Список пользователей',
+            'addUser'=>'Добавление пользователя',
+        ];
+        return view('system.admin_page.security_policy.users.form_add_user', compact('arRoles','arChain'));
     }
 
     public function displayRoles()
@@ -110,7 +115,12 @@ class SecurityPolicy extends Controller
         $arUser = User::find($id);
         $arRole = Role::all(['id', 'name']);
 
-        return view('system.admin_page.security_policy.users.detail_user', compact('arUser', 'arRole'));
+        $arChain=[
+            '/'=>'Список пользователей',
+            'user'=>$arUser->login,
+        ];
+
+        return view('system.admin_page.security_policy.users.detail_user', compact('arUser', 'arRole','arChain'));
     }
 
     public function updateUser(UpdUser $request,$id)

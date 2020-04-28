@@ -60,7 +60,7 @@ Route::group(['prefix'=>'psc','middleware'=>'auth_admin_page','namespace'=>'Syst
         Route::post('/list_main_categories',['uses'=>'AdminContent@actionList','as'=>'actionList']);
 
         //Отображение подконтента
-        Route::get('/sub_content/{id}',['uses'=>'AdminContent@displayListSubContent','as'=>'list_sub_content']);
+        Route::get('/sub_content/{id}/',['uses'=>'AdminContent@displayListSubContent','as'=>'list_sub_content']);
 
         //Выболнить действия для подконтента
         Route::post('/sub_content/',['uses'=>'AdminContent@actionList','as'=>'actionList']);

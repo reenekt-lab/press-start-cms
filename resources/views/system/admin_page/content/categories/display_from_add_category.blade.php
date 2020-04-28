@@ -7,12 +7,17 @@
             <div class="col-12">
                 <div class="bg_detail">
                     <div class="wrap_chain">
-                        <a class="a_category" href="{{route('list_categories')}}">
-                            Категории
-                        </a>
-                        <a class="a_detail" href="javascript:void(0)">
-                            Добавление категории
-                        </a>
+                        @foreach($arChain as $key=>$value)
+                            <a
+                                @if($key=='/')
+                                    href="{{route('list_categories')}}"
+                                @else
+                                    href=""
+                                @endif
+                            >
+                                {{$value}}
+                            </a>
+                        @endforeach
                     </div>
                     @if ($errors->any())
                         <div class="error_list">

@@ -7,9 +7,11 @@
         <div class="col-12">
             <div class="wrap_list_category">
                 <div class="wrap_chain">
-                    <a href="{{route('list_categories')}}">
-                        Категории
-                    </a>
+                    @foreach($arChain as $arItem)
+                        <a href="{{route('list_categories')}}">
+                            {{$arItem}}
+                        </a>
+                    @endforeach
                 </div>
                 <div class="wrap_title_category">
                     <p>
@@ -72,7 +74,7 @@
                                         </a>
                                     </div>
                                     <div class="col-4 list_category_name categoryCol ">
-                                        <a href="{{route('list_sub_content',$arItem->id)}}">
+                                        <a href="{{route('list_sub_content', [$arItem->id])}}">
                                             {{$arItem->name}}
                                         </a>
                                     </div>

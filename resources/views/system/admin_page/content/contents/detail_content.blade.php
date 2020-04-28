@@ -5,13 +5,13 @@
         <div class="col-12">
             <div class="bg_detail">
                 <div class="wrap_chain">
-                    <a class="a_category" href="{{route('list_categories')}}">
+                    <a href="{{route('list_categories')}}">
                         Категории
                     </a>
-                    <a class="a_content detail_content" href="{{route('list_content',$id)}}">
+                    <a href="{{route('list_sub_content',$id)}}">
                         Контент
                     </a>
-                    <a class="a_detail" href="javascript:void(0)">
+                    <a href="javascript:void(0)">
                         {{$arContent->title}}
                     </a>
                 </div>

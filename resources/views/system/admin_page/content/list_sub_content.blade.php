@@ -7,9 +7,17 @@
         <div class="col-12">
             <div class="wrap_list_category">
                 <div class="wrap_chain">
-                    <a href="{{route('list_categories')}}">
-                        Категории
-                    </a>
+                    @foreach($arChain as $key=>$value)
+                        <a
+                            @if($key=='/')
+                            href="{{route('list_categories')}}"
+                            @else
+                            href="{{route('list_sub_content',$key)}}"
+                            @endif
+                        >
+                            {{$value}}
+                        </a>
+                    @endforeach
                 </div>
                 <div class="wrap_title_category">
                     <p>

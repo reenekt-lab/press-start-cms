@@ -41,9 +41,17 @@
         <div class="col-12">
             <div class="wrap_list_category">
                 <div class="wrap_chain">
-                    <a href="{{route('setting_list_main_category')}}">
-                        Список главных категорий
-                    </a>
+                    @foreach($arChain as $key=>$value)
+                        <a
+                            @if($key=='/')
+                                href="{{route('setting_list_main_category')}}"
+                            @else
+                                href=""
+                            @endif
+                        >
+                            {{$value}}
+                        </a>
+                    @endforeach
                 </div>
                 <div class="row rowTitleListProperty">
                     <div class="col-md-3 colTitleListProperty">

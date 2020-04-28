@@ -4,17 +4,6 @@
 <div class="row">
     <div class="col-12">
         <div class="bg_detail">
-            <div class="wrap_chain">
-                <a class="a_category" href="{{route('list_categories')}}">
-                    Категории
-                </a>
-                <a class="a_detail" href="javascript:void(0)">
-                    Редактирование категории
-                </a>
-                <a class="a_detail" href="javascript:void(0)">
-                    {{$arCategory->name}}
-                </a>
-            </div>
             <div class="wrap_title_detail">
                 <p>
                     Редактирование: {{$arCategory->name}}

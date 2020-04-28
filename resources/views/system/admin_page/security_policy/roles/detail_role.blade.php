@@ -9,7 +9,7 @@
                     <div class="col-8">
                         <div class="bg_detail">
                             <div class="wrap_chain">
-                                <a class="a_category" href="{{route('all_roles')}}">Список ролей</a>
+                                <a href="{{route('all_roles')}}">Список ролей</a>
                                 <a href="javascript:void(0)">{{$role->name}}</a>
                             </div>
                             @if ($errors->any())

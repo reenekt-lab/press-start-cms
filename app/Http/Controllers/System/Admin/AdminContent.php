@@ -6,6 +6,7 @@ use App\Http\Requests\System\Category\AddCategory;
 use App\Http\Requests\System\Category\UpdateCategory;
 use App\Http\Requests\ValidationRequest;
 use App\Library\ActionList\ActionContentPage;
+use App\Library\InteractChain\Chain;
 use App\Library\WorkWithSetAdditionalPropery\InteractSetAdditionalProperty;
 use App\Models\Category;
 use App\Models\Content;
@@ -14,6 +15,7 @@ use App\Models\StorageValSetAdditionalProp;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use View;
 use function Psy\debug;
 
@@ -31,7 +33,12 @@ class AdminContent extends Controller
 
     public function displayFormAddCategory($id=null)
     {
-        return view('system.admin_page.content.categories.display_from_add_category',compact('id'));
+        $arChain=[
+            '/'=>'Главные категории',
+            'category'=>'Создание новой главной категории',
+        ];
+
+        return view('system.admin_page.content.categories.display_from_add_category',compact('id','arChain'));
     }
 
     public function displayListSubContent($id)
@@ -42,14 +49,26 @@ class AdminContent extends Controller
         //Получаем массив конетента, в зависимости какую категорию выбрали
         $arContent=Category::find($id)->content;
 
-        return view('system.admin_page.content.list_sub_content',compact('arSubCategory','arContent','id'));
+        $arChain=Chain::getArChain($id);
+
+        return view('system.admin_page.content.list_sub_content',compact(
+            'arSubCategory',
+            'arContent',
+            'arChain',
+            'id'
+        ));
     }
 
     public function displayListMainCategories()
     {
         $aRcategories = Category::where('super_category',true)->orderBy('name')->get();
 
-        return view('system.admin_page.content.mainCategories.list_main_categories', compact('aRcategories'));
+        $arChain=Chain::getArChain();
+
+        return view('system.admin_page.content.mainCategories.list_main_categories', compact(
+            'aRcategories',
+            'arChain'
+        ));
     }
 
     public function displayFormUpdateCategory($id)

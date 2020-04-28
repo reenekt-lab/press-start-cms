@@ -9,8 +9,17 @@
                     <div class="col-8">
                         <div class="bg_detail">
                             <div class="wrap_chain">
-                                <a class="a_category" href="{{route('admin_account')}}">Список пользователей</a>
-                                <a href="javascript:void(0)">Добавление пользователя</a>
+                                @foreach($arChain as $key=>$value)
+                                    <a
+                                        @if($key=='/')
+                                            href="{{route('admin_account')}}"
+                                        @else
+                                            href=""
+                                        @endif
+                                    >
+                                        {{$value}}
+                                    </a>
+                                @endforeach
                             </div>
                             @if ($errors->any())
                                 <div class="error_list">

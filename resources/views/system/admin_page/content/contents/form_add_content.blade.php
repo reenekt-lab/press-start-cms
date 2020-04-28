@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-12 bg_detail">
             <div class="wrap_chain">
-                <a class="a_category" href="{{route('list_categories')}}">
+                <a href="{{route('list_categories')}}">
                     Категории
                 </a>
                 <a class="a_content" href="#">

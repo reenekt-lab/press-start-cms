@@ -210,3 +210,25 @@ new Vue({
         }
     }
 });
+
+//SideBarAdminPage
+new Vue({
+    el:'.sidebarMenu',
+    data:{
+        text:'123'
+    },
+    methods:{
+        displaySubMenuSetting:function ()
+        {
+            var classObject=document.querySelector('.js_setting');
+
+            if (classObject.classList.contains('js_display_sub_menu')) {
+                classObject.classList.remove('js_display_sub_menu');
+                document.querySelector('.setting').classList.remove('rollArrow');
+            } else {
+                classObject.classList.add('js_display_sub_menu');
+                document.querySelector('.setting').classList.add('rollArrow');
+            }
+        }
+    }
+});

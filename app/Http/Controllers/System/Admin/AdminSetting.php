@@ -26,11 +26,17 @@ class AdminSetting extends Controller
 
         $maxId=SetAdditionalProperty::max('id');
 
+        $arChain=[
+            '/'=>'Список главных категорий',
+            Category::find($id)->id=>Category::find($id)->name
+        ];
+
         return view('system.admin_page.setting.additionalProperty.form_add_property',compact(
             'id',
             'arAdditionalProperty',
             'arSetAdditionalProperty',
-            'maxId'
+            'maxId',
+            'arChain'
         ));
     }
 
