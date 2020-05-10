@@ -4,12 +4,12 @@
 
 @section('formAddProperty')
     <div class="row rowListAdditionalProperty">
+
         <p ref="hiddenListPropertyName" style="display: none">
             @foreach($arAdditionalProperty as $arItemProperty)
                 {{$arItemProperty['name']}}|
             @endforeach
         </p>
-
         <p ref="hiddenListPropertyId" style="display: none">
             @foreach($arAdditionalProperty as $arItemProperty)
                 {{$arItemProperty['id']}}|
@@ -38,6 +38,7 @@
                 </p>
             </div>
         @endif
+
         <div class="col-12">
             <div class="wrap_list_category">
                 <div class="wrap_chain">
@@ -53,116 +54,176 @@
                         </a>
                     @endforeach
                 </div>
-                <div class="row rowTitleListProperty">
-                    <div class="col-md-3 colTitleListProperty">
-                        <p>
-                            Название
-                        </p>
-                    </div>
-                    <div class="col-md-3 colTitleListProperty">
-                        <p>
-                            Тип свойства
-                        </p>
-                    </div>
-                    <div class="col-md-1 colTitleListProperty">
-                        <p>
-                            Активно
-                        </p>
-                    </div>
-                    <div class="col-md-3 colTitleListProperty">
-                        <p>
-                            Символьный код
-                        </p>
-                    </div>
-                    <div class="col-md-1 colTitleListProperty">
-                        <p>
-                            ID
-                        </p>
-                    </div>
-                    <div class="col-md-1 colTitleListProperty">
-                        <p>
-                            Удалить
-                        </p>
-                    </div>
-                </div>
                 <form method="post" action="{{route('add_property',$id)}}">
                     @csrf
                     @php
                         $i=0;
                     @endphp
-                    @foreach($arSetAdditionalProperty as $arItem)
-                    <div class="row rowListProperty">
-                        <div class="col-md-3 colListProperty">
-                            <input type="text" name="propertyName_{{$arItem['id']}}" value="{{old('propertyName_'.$arItem['id'],$arItem['name'])}}">
-                        </div>
-                        <div class="col-md-3 colListProperty">
-                            @if(array_key_exists('listProperties_'.$arItem['id'],old()))
-                                <select name="listProperties_{{$arItem['id']}}">
-                                    @foreach($arAdditionalProperty as $arItemProperty)
-                                        <option value="{{$arItemProperty['id']}}"
-                                            @if(old('listProperties_'.$arItem['id'])==$arItemProperty['id'])
-                                                selected
-                                            @endif>
-                                            {{$arItemProperty['name']}}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            @else
-                                <select name="listProperties_{{$arItem['id']}}">
-                                    @foreach($arAdditionalProperty as $arItemProperty)
-                                        <option value="{{$arItemProperty['id']}}"
-                                                @if($arSetAdditionalProperty[$i]->property_id==$arItemProperty['id'])
-                                                selected
-                                            @endif
-                                        >
-                                            {{$arItemProperty['name']}}
-                                        </option>
-                                    @endforeach
-                                    @php
-                                        $i++;
-                                    @endphp
-                                </select>
-                            @endif
-                        </div>
-                        <div class="col-md-1 d-flex align-items-center colListProperty">
-                            <input type="checkbox" name="active_{{$arItem['id']}}"
-                            @if($arItem['active'])
-                                checked
-                            @endif
-                            >
-                        </div>
-                        <div class="col-md-3 colListProperty">
-                            <input type="text" name="symbolCode_{{$arItem['id']}}" value="{{old('symbolCode_'.$arItem['id'],$arItem['user_symbol_code'])}}">
-                        </div>
-                        <div class="col-md-1 colListProperty">
-                            <p>
-                                {{$arItem['id']}}
-                            </p>
-                        </div>
-                        <div class="col-md-1">
-                            <input type="checkbox" name="propId_{{$arItem['id']}}">
-                        </div>
-                    </div>
-                    @endforeach
-                    <div class="wrapAdditionalPropertyJs">
-                        <?php
+                    <table class="tableAdditionalProp">
+                        <tr>
+                            <td class="tdTitleProp">
+                                <div class="colTitleListProperty">
+                                    <p>
+                                        Название
+                                    </p>
+                                </div>
+                            </td>
+                            <td class="tdTypeProp">
+                                <div class="colTitleListProperty">
+                                    <p>
+                                        Тип свойства
+                                    </p>
+                                </div>
+                            </td>
+                            <td class="tdActiveProp">
+                                <div class="colTitleListProperty colActive">
+                                    <p>
+                                        Активно
+                                    </p>
+                                </div>
+                            </td>
+                            <td class="tdSympolCodeProp">
+                                <div class="colTitleListProperty">
+                                    <p>
+                                        Символьный код
+                                    </p>
+                                </div>
+                            </td>
+                            <td class="tdToChangeProp">
+                                <div class="colTitleListProperty">
+                                    <p>
+                                        Изм...
+                                    </p>
+                                </div>
+                            </td>
+                            <td class="tdIdProp">
+                                <div class="colTitleListProperty">
+                                    <p>
+                                        ID
+                                    </p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="colTitleListProperty">
+                                    <p>
+                                        Удалить
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+
+                        @foreach($arSetAdditionalProperty as $arItem)
+                        <tr class="trAdditionalProp">
+                            <td>
+                                <input type="text" name="propertyName_{{$arItem['id']}}" value="{{old('propertyName_'.$arItem['id'],$arItem['name'])}}">
+                            </td>
+                            <td>
+                                @if(array_key_exists('listProperties_'.$arItem['id'],old()))
+                                    <select class="listProperties_{{$arItem['id']}}" name="listProperties_{{$arItem['id']}}">
+                                        @foreach($arAdditionalProperty as $arItemProperty)
+                                            <option value="{{$arItemProperty['id']}}"
+                                                    @if(old('listProperties_'.$arItem['id'])==$arItemProperty['id'])
+                                                    selected
+                                                @endif>
+                                                {{$arItemProperty['name']}}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                @else
+                                    <select class="listProperties_{{$arItem['id']}}" name="listProperties_{{$arItem['id']}}">
+                                        @foreach($arAdditionalProperty as $arItemProperty)
+                                            <option value="{{$arItemProperty['id']}}"
+                                                    @if($arSetAdditionalProperty[$i]->property_id==$arItemProperty['id'])
+                                                    selected
+                                                @endif
+                                            >
+                                                {{$arItemProperty['name']}}
+                                            </option>
+                                        @endforeach
+                                        @php
+                                            $i++;
+                                        @endphp
+                                    </select>
+                                @endif
+                            </td>
+                            <td class="tdActiveProp">
+                                <input type="checkbox" name="active_{{$arItem['id']}}"
+                                   @if($arItem['active'])
+                                   checked
+                                   @endif>
+                            </td>
+                            <td>
+                                <input
+                                    type="text"
+                                    name="symbolCode_{{$arItem['id']}}"
+                                    value="{{old('symbolCode_'.$arItem['id'],$arItem['user_symbol_code'])}}"
+                                >
+                            </td>
+                            <td>
+                                <div
+                                    @click="displayModalWindow('{{$arItem->id}}')"
+                                    class="btnDisplayNewProp"
+                                >
+                                    ...
+                                </div>
+                            </td>
+                            <td>
+                                <div class="additionalPropId">
+                                    {{$arItem['id']}}
+                                </div>
+                            </td>
+                            <td class="tdBtnToDel">
+                                <input type="checkbox" name="propId_{{$arItem['id']}}">
+                            </td>
+                        </tr>
+
+                        @include('system.admin_page.setting.additionalProperty.include.formNewSettingPropInput')
+                        @include('system.admin_page.setting.additionalProperty.include.formNewSettingPropTextArea')
+
+                        @endforeach
+
+                        <!--Если запрос не прошёл валидацию, то возвращает JS строки-->
+                        @php
                             $JsRow = Session::get('JsRow');
                             $HiddenMaxId = Session::get('HiddenMaxId');
-                        ?>
+                        @endphp
+                        {!! $JsRow !!}
+
+
+                        <!--если валидация не прошла, то созданные модальные окна отображаются-->
+                        @php
+                            $JsModalInput=Session::get('modalWindowInput');
+                            $JsModalTextArea=Session::get('modalWindowTextArea');
+                        @endphp
+                        {!! $JsModalInput !!}
+                        {!! $JsModalTextArea !!}
+
+                        <!--Отображение нововой JS строки по нажатию кнопки-->
+                        @include('system.admin_page.setting.additionalProperty.include.addNewRow.newRowProp')
+
+                        <!--Max ID необходимо, чтобы можно было добавлять новые строки при провале валиадции-->
                         @if($HiddenMaxId)
                             <input type="hidden" ref="maxIdJsProperty" value="{{$HiddenMaxId}}">
                         @endif
-                        {!! $JsRow !!}
+
+                    </table>
+
+                    <!--JS модальные формы-->
+                    <div v-for="JsItem in countNewRow">
+                        @include('system.admin_page.setting.additionalProperty.include.addNewRow.formNewSettingPropInput')
+                        @include('system.admin_page.setting.additionalProperty.include.addNewRow.formNewSettingPropTextArea')
                     </div>
-                    <div class="row">
-                        <div class="col-12 d-flex justify-content-center">
-                            <div class="btnAddRowAdditionalProperty" @click="addRow">
+
+                    <div class="wrapBtnAddNewRowAndSave">
+                        <div class="wrapAddNewRow">
+                            <div
+                                class="btnAddRowAdditionalProperty"
+                                @click="addRow"
+                            >
                                 Добавить строку
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
+                        <div>
                             <input
                                 @click="displayPreloader"
                                 class="btnSaveAdditionalProperty"

@@ -25,6 +25,9 @@ class CreateSetAdditionalPropertiesTable extends Migration
             $table->string('name');
             $table->boolean('active');
             $table->string('user_symbol_code')->nullable();
+            $table->string('defaultVal')->nullable();
+            $table->string('width')->nullable();
+            $table->string('height')->nullable();
 
             $table->timestamps();
         });

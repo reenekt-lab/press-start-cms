@@ -78,7 +78,9 @@ class AdminSetting extends Controller
             )->with([
                 'JsRow'=>$newAdditionalProperty['html'],
                 'HiddenMaxId'=>$newAdditionalProperty['maxId'],
-                'displayAnotherSelect'=>true
+                'displayAnotherSelect'=>true,
+                'modalWindowInput'=>AdditionalPropertyClass::getHtmlModalWindowInput($request->except('_token')),
+                'modalWindowTextArea'=>AdditionalPropertyClass::getHtmlModalWindowTextArea($request->except('_token'))
             ]);
         }else
         {

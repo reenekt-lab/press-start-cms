@@ -120,6 +120,7 @@ body{
 
 .contentMain{
     width: 100%;
+    padding: 0 18px;
 }
 /*endregion*/
 
@@ -313,6 +314,7 @@ body{
     border-radius: 5px;
     padding: 18px;
     box-shadow: 0 0 34px -12px rgba(0,0,0,0.75);
+    width: 100%;
 }
 
 .bg_detail input[type="password"]{
@@ -348,7 +350,10 @@ body{
     margin-top: 10px!important;
 }
 
-
+.add_content_from textarea{
+    padding: 5px;
+    border-radius: 5px;
+}
 /*endregion*/
 
 /*region list_category*/
@@ -18148,6 +18153,220 @@ h3 {
 
 .wrap_chain a:last-child:after{
     content: '';
+}
+/*endregion*/
+
+/*region additionalProp*/
+.tableAdditionalProp input{
+    border-radius: 5px;
+    border: 1px solid;
+    width: 90%;
+}
+
+.tableAdditionalProp select{
+    width: 90%;
+    height: 27.6px;
+    border-radius: 5px;
+}
+
+.tableAdditionalProp td{
+    height: 50px;
+}
+
+.trAdditionalProp{
+    border-top: 1px solid #cbcbcb;
+}
+
+.tableAdditionalProp{
+    width: 100%;
+}
+
+.tableAdditionalProp input{
+    padding: 0 5px;
+    border-color: #c4c4c4;
+}
+
+.tdActiveProp{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.colActive{
+    width: 88px;
+}
+
+.additionalPropId{
+    min-width: 44.8px;
+}
+
+.btnDisplayNewProp{
+    width: 40px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    border-radius: 5px;
+    border: 1px solid #c8c8c8;
+    cursor: pointer;
+    background-color: #f3f3f3;
+    transition: .3s;
+}
+
+.btnDisplayNewProp:hover{
+    background-color: #e1dede;
+}
+
+.tdBtnToDel{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tdTitleProp{
+    min-width: 220px;
+}
+
+.tdTypeProp{
+    min-width: 200px;
+}
+
+.tdActiveProp{
+    min-width: 120px;
+}
+
+.tdSympolCodeProp{
+    min-width: 220px;
+}
+
+.tdToChangeProp{
+    min-width: 95px;
+}
+
+.tdIdProp{
+    min-width: 60px;
+}
+
+.wrapAddNewRow{
+    display: flex;
+    justify-content: center;
+}
+
+.wrapBtnAddNewRowAndSave{
+    margin: auto;
+}
+
+.bgFormSettingAddProp{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background-color: rgba(0,0,0,.4);
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.justWrap{
+    background-color: white;
+    width: 600px;
+    max-height: 500px;
+    overflow-y: scroll;
+    padding: 15px;
+}
+
+.wrapFormSettingAddProp{
+    display: flex;
+    flex-flow: row;
+    margin-bottom: 15px;
+}
+
+.wrapAdminPageAddPropSettingLeft{
+    min-width: 250px;
+    display: flex;
+    align-items: flex-end;
+}
+
+.wrapAdminPageAddPropSettingRight{
+    width: 100%;
+}
+
+.wrapAdminPageAddPropSettingRight input{
+    width: 100%;
+    padding: 0 5px;
+}
+
+.wrapBlockBtnSaveSetting{
+    display: flex;
+    flex-flow: wrap;
+    margin-top: 10px;
+}
+
+.wrapLeftBlockBtnSettingAddProp,
+.wrapRightBlockBtnSettingAddProp{
+    width: 50%;
+}
+
+.btnSaveSetting{
+    width: 140px;
+    background-color: #3490dc;
+    border-radius: 5px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    transition: .2s;
+    cursor: pointer;
+}
+
+.btnSaveSetting:hover{
+    background-color: #165d98;
+}
+
+.wrapRightBlockBtnSettingAddProp{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btnCloseSetting{
+    width: 140px;
+    height: 35px;
+    background-color: #b7b7b7;
+    border-radius: 5px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: .2s;
+    cursor: pointer;
+}
+
+.btnCloseSetting:hover{
+    background-color: #8e8e8e;
+}
+
+.sizeTextArea{
+    display: flex;
+    align-items: flex-end;
+}
+
+.sizeTextArea input{
+    width: 50px;
+}
+
+.sizeTextArea input:first-child{
+    margin-right: 5px;
+}
+
+.sizeTextArea input:last-child {
+    margin-left: 5px;
+}
+
+.sizeTextArea p{
+    margin: 0;
+    height: 20px;
 }
 /*endregion*/
 

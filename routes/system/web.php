@@ -153,7 +153,6 @@ Route::group(['prefix'=>'psc','middleware'=>'auth_admin_page','namespace'=>'Syst
 
     //Добавление свойства
     Route::post('/fromProperty/{id}',['uses'=>'AdminSetting@addProperty','as'=>'add_property']);
-
     //endregion
 
     //region Список тем

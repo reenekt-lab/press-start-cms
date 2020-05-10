@@ -116,14 +116,38 @@ $(document).ready(function () {
     // endregion
 });
 
+//SideBarAdminPage
+new Vue({
+    el:'.sidebarMenu',
+    methods:{
+        displaySubMenuSetting:function ()
+        {
+            var classObject=document.querySelector('.js_setting');
+
+            if (classObject.classList.contains('js_display_sub_menu')) {
+                classObject.classList.remove('js_display_sub_menu');
+                document.querySelector('.setting').classList.remove('rollArrow');
+            } else {
+                classObject.classList.add('js_display_sub_menu');
+                document.querySelector('.setting').classList.add('rollArrow');
+            }
+        }
+    }
+});
+
 //Список дополнительных категорий
 new Vue({
     el:'.rowListAdditionalProperty',
     data:{
         listPropertiesName:[],
         listPropertiesId:[],
-        htmlNewRow:'',
-        id:1
+
+        // Количесво строк отображаемых в цикле
+        countNewRow:[],
+        id:1,
+
+        // ID для элементов, чтобы можно было бы работать
+        idSelectedProp:0,
     },
     mounted:function()
     {
@@ -138,35 +162,12 @@ new Vue({
     methods:{
         addRow:function ()
         {
-            var newDiv=document.createElement('div');
-
-            newDiv.className='row rowListProperty';
-            newDiv.innerHTML='' +
-                '<div class="col-md-3 colListProperty">' +
-                    '<input type="text" name="JSpropertyName_'+this.id+'">' +
-                '</div>'+
-                '<div class="col-md-3 colListProperty">'+
-                    this.htmlSelect()+
-                '</div>'+
-                '<div class="col-md-1 d-flex align-items-center colListProperty">' +
-                    '<input type="checkbox" name="JSactive_'+this.id+'" checked>'+
-                '</div>'+
-                '<div class="col-md-3 colListProperty">' +
-                    '<input type="text" name="JSsymbolCode_'+this.id+'">'+
-                '</div>'+
-                '<div class="col-md-1 colListProperty"></div>'+
-                '<div class="col-md-1"></div>';
-
-            document.querySelector('.wrapAdditionalPropertyJs').appendChild(newDiv);
-
-            this.htmlNewRow=document.querySelector('.wrapAdditionalPropertyJs').innerHTML;
-
-            this.id++;
+            this.countNewRow.push(this.id++);
         },
 
-        htmlSelect:function (listProperties)
+        htmlSelect:function (itemID)
         {
-            var htmlSelect='<select name="JSlistProperties_'+this.id+'">';
+            var htmlSelect='<select class="JSlistProperties_'+itemID+'" name="JSlistProperties_'+itemID+'">';
             var i=0;
 
             this.listPropertiesName.forEach(element=>{
@@ -203,31 +204,95 @@ new Vue({
             });
         },
 
+        addModalWindowInput:function()
+        {
+            var newDiv=document.createElement('div');
+            newDiv.classList='bgFormSettingAddProp JSmodalWindowInput_'+this.id;
+            newDiv.style='display:none';
+
+            newDiv.innerHTML='' +
+                '<div class="justWrap">' +
+                    '<div class="wrapFormSettingAddProp">' +
+                        '<div class="wrapAdminPageAddPropSettingLeft">' +
+                            '<p>' +
+                                'Значение по умолчанию'+
+                            '</p>'+
+                        '</div>'+
+                        '<div class="wrapAdminPageAddPropSettingRight">' +
+                            '<input type="text" name="JSsettingAdditionalPropDefaultValInput_'+this.id+'">'+
+                        '</div>'+
+                    '</div>'+
+                    '<div class="wrapBlockBtnSaveSetting">' +
+                        '<div class="wrapLeftBlockBtnSettingAddProp">' +
+                            '<div class="btnSaveSetting">Закрыть</div>'+
+                        '</div>'+
+                    '</div>'+
+                '</div>';
+
+            document.querySelector('.tableAdditionalProp').appendChild(newDiv);
+        },
+
         displayPreloader:function ()
         {
             document.querySelector('.bg_fix_preloader').style.display='flex';
             document.querySelector('body').style.overflow='hidden';
-        }
-    }
-});
+        },
 
-//SideBarAdminPage
-new Vue({
-    el:'.sidebarMenu',
-    data:{
-        text:'123'
-    },
-    methods:{
-        displaySubMenuSetting:function ()
+        displayModalWindow:function(id)
         {
-            var classObject=document.querySelector('.js_setting');
+            this.idSelectedProp=document.querySelector(".listProperties_"+id).value;
 
-            if (classObject.classList.contains('js_display_sub_menu')) {
-                classObject.classList.remove('js_display_sub_menu');
-                document.querySelector('.setting').classList.remove('rollArrow');
-            } else {
-                classObject.classList.add('js_display_sub_menu');
-                document.querySelector('.setting').classList.add('rollArrow');
+            if(this.idSelectedProp==1)
+            {
+                this.$refs['modalWindowInput_'+id].style.display='flex';
+            }
+            else if(this.idSelectedProp==2)
+            {
+                this.$refs['modalWindowTextArea'+id].style.display='flex';
+            }
+        },
+
+        closeModalWindowProp:function (id)
+        {
+            if(this.idSelectedProp==1)
+            {
+                document.querySelector('.modalWindowInput_'+id).style.display='none';
+            }
+            else if (this.idSelectedProp==2)
+            {
+                document.querySelector('.modalWindowTextArea_'+id).style.display='none';
+            }
+        },
+
+        JSopenModalWindow:function (id)
+        {
+            console.clear();
+            console.log('ID: '+id);
+            this.idSelectedProp=document.querySelector(".JSlistProperties_"+id).value;
+
+            if(this.idSelectedProp==1)
+            {
+                document.querySelector('.JSbgFormSettingInputAddProp_'+id).style.display='flex';
+            }
+            else if(this.idSelectedProp==2)
+            {
+                document.querySelector('.JSbgFormSettingTextAreaAddProp_'+id).style.display='flex';
+            }
+        },
+
+        JScloseModalWindowProp:function (id)
+        {
+            if(this.idSelectedProp==1)
+            {
+                // Закрывает те модальные окна, где есть выбранный ID
+                // Но т.к. мне лень создавать ещё функцию закрытия модального окна для каждого свойства
+                // Я закрываю все модальные окна, где есть определенный ID
+
+                document.querySelector('.JSbgFormSettingInputAddProp_'+id).style.display='none'
+            }
+            else if(this.idSelectedProp==2)
+            {
+                document.querySelector('.JSbgFormSettingTextAreaAddProp_'+id).style.display='none'
             }
         }
     }

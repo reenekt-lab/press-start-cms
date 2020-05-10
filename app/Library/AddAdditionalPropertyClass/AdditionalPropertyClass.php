@@ -5,6 +5,7 @@ namespace App\Library\AddAdditionalPropertyClass;
 use App\Http\Controllers\Controller;
 use App\Models\ListAdditionalProperty;
 use App\Models\SetAdditionalProperty;
+use phpDocumentor\Reflection\Types\Self_;
 
 class AdditionalPropertyClass
 {
@@ -15,12 +16,12 @@ class AdditionalPropertyClass
      */
     public static function updateExistingProperties($newRequest, $id)
     {
-        $arIdExistingSetAdditional=AdditionalPropertyClass::getArrayIdProperty($id);
-        $arNameExistingSetAdditional=AdditionalPropertyClass::convertToArrayExistingName($newRequest);
-        $arListPropertyExistingSetAdditional=AdditionalPropertyClass::convertToArrayExistingListProperty($newRequest);
-        $arActiveExistingSetAdditional=AdditionalPropertyClass::convertToArrayExistingActive($newRequest);
-        $arSymbolCodeExistingSetAdditional=AdditionalPropertyClass::convertToArrayExistingSymbolCode($newRequest);
-
+        $arIdExistingSetAdditional = self::getArrayIdProperty($id);
+        $arNameExistingSetAdditional = self::convertToArrayExistingName($newRequest);
+        $arListPropertyExistingSetAdditional = self::convertToArrayExistingListProperty($newRequest);
+        $arActiveExistingSetAdditional = self::convertToArrayExistingActive($newRequest);
+        $arSymbolCodeExistingSetAdditional = self::convertToArrayExistingSymbolCode($newRequest);
+        $arSettingAdditionalProp = self::getArraySettingAdditionalProp($newRequest);
 
         SetAdditionalProperty::updateExistingProperties(
             $arIdExistingSetAdditional,
@@ -28,7 +29,8 @@ class AdditionalPropertyClass
             $arListPropertyExistingSetAdditional,
             $arActiveExistingSetAdditional,
             $arSymbolCodeExistingSetAdditional,
-            $id
+            $id,
+            $arSettingAdditionalProp
         );
     }
 
@@ -41,23 +43,21 @@ class AdditionalPropertyClass
      * Отобразился список свойств, в зависимости от категорий и юзер
      * существующей свойству убрал название, тогда отображается ему ошибка об этом
      */
-    public static function validationExistingName($newRequest,$id)
+    public static function validationExistingName($newRequest, $id)
     {
-        $arPropertyName=[];
-        $errorNullVal=false;
-        $arAdditionalPropId=AdditionalPropertyClass::getArrayIdProperty($id);
+        $arPropertyName = [];
+        $errorNullVal = false;
+        $arAdditionalPropId = AdditionalPropertyClass::getArrayIdProperty($id);
 
-        foreach ($newRequest as $key=>$value)
-        {
-            $pieces=explode('_',$key);
+        foreach ($newRequest as $key => $value) {
+            $pieces = explode('_', $key);
 
-            if($pieces[0]=='propertyName')
-                $arPropertyName[$pieces[1]]=$value;
+            if ($pieces[0] == 'propertyName')
+                $arPropertyName[$pieces[1]] = $value;
         }
 
-        foreach ($arAdditionalPropId as $arItem)
-        {
-            $arPropertyName[$arItem]==null? $errorNullVal=true:'';
+        foreach ($arAdditionalPropId as $arItem) {
+            $arPropertyName[$arItem] == null ? $errorNullVal = true : '';
         }
 
         return $errorNullVal;
@@ -65,12 +65,11 @@ class AdditionalPropertyClass
 
     public static function getArrayIdProperty($id)
     {
-        $arSetAdditionalProperty=SetAdditionalProperty::where('category_id',$id)->get();
-        $arIdSetAdditional=[];
+        $arSetAdditionalProperty = SetAdditionalProperty::where('category_id', $id)->get();
+        $arIdSetAdditional = [];
 
-        foreach ($arSetAdditionalProperty as $arItem)
-        {
-            array_push($arIdSetAdditional,$arItem->id);
+        foreach ($arSetAdditionalProperty as $arItem) {
+            array_push($arIdSetAdditional, $arItem->id);
         }
 
         return $arIdSetAdditional;
@@ -82,24 +81,21 @@ class AdditionalPropertyClass
      * @return bool
      * Проверяет на уникальность символьного кода свойства:
      */
-    public static function checkExistingUniqueSymbolCode($newRequest ,$id)
+    public static function checkExistingUniqueSymbolCode($newRequest, $id)
     {
-        $arSymbolCode=AdditionalPropertyClass::convertToArrayExistingSymbolCode($newRequest);
-        $arUniqueSymbolCode=AdditionalPropertyClass::getArraySymbolCode();
+        $arSymbolCode = AdditionalPropertyClass::convertToArrayExistingSymbolCode($newRequest);
+        $arUniqueSymbolCode = AdditionalPropertyClass::getArraySymbolCode();
 
         //Здесь логика такая
         //Получаем массив всех свойст из выбранной "Главной категории"
         //И проверяем, дублируется ли символьный код
-        foreach ($arUniqueSymbolCode as $arItem)
-        {
-            if($arItem)
-            {
-                $countSymbolCode=array_filter($arSymbolCode,function ($symbolCode) use ($arItem){
-                    return $symbolCode==$arItem;
+        foreach ($arUniqueSymbolCode as $arItem) {
+            if ($arItem) {
+                $countSymbolCode = array_filter($arSymbolCode, function ($symbolCode) use ($arItem) {
+                    return $symbolCode == $arItem;
                 });
 
-                if(count($countSymbolCode)>1)
-                {
+                if (count($countSymbolCode) > 1) {
                     return true;
                 }
             }
@@ -115,13 +111,12 @@ class AdditionalPropertyClass
      */
     public static function getArraySymbolCode()
     {
-        $arSymbolCode=[];
+        $arSymbolCode = [];
 
-        $arExistingSymbolCode=SetAdditionalProperty::all(['user_symbol_code']);
+        $arExistingSymbolCode = SetAdditionalProperty::all(['user_symbol_code']);
 
-        foreach ($arExistingSymbolCode as $arItem)
-        {
-            array_push($arSymbolCode,$arItem->user_symbol_code);
+        foreach ($arExistingSymbolCode as $arItem) {
+            array_push($arSymbolCode, $arItem->user_symbol_code);
         }
 
         return $arSymbolCode;
@@ -134,17 +129,15 @@ class AdditionalPropertyClass
      */
     public static function convertToArrayExistingSymbolCode($newRequest)
     {
-        $arSymbolCode=[];
-        $arUniqueSymbolCode=[];
+        $arSymbolCode = [];
+        $arUniqueSymbolCode = [];
 
-        foreach ($newRequest as $key=>$value)
-        {
-            $pieces=explode('_',$key);
+        foreach ($newRequest as $key => $value) {
+            $pieces = explode('_', $key);
 
-            if($pieces[0]=='symbolCode')
-            {
+            if ($pieces[0] == 'symbolCode') {
                 $result = preg_replace("/\s+/", "", $value);
-                array_push($arSymbolCode,$result);
+                array_push($arSymbolCode, $result);
             }
         }
 
@@ -158,14 +151,13 @@ class AdditionalPropertyClass
      */
     public static function convertToArrayExistingName($newRequest)
     {
-        $arName=[];
+        $arName = [];
 
-        foreach ($newRequest as $key=>$value)
-        {
-            $pieces=explode('_',$key);
+        foreach ($newRequest as $key => $value) {
+            $pieces = explode('_', $key);
 
-            if($pieces[0]=='propertyName')
-                array_push($arName,$value);
+            if ($pieces[0] == 'propertyName')
+                array_push($arName, $value);
         }
 
         return $arName;
@@ -178,14 +170,13 @@ class AdditionalPropertyClass
      */
     public static function convertToArrayExistingListProperty($newRequest)
     {
-        $arListProperty=[];
+        $arListProperty = [];
 
-        foreach ($newRequest as $key=>$value)
-        {
-            $pieces=explode('_',$key);
+        foreach ($newRequest as $key => $value) {
+            $pieces = explode('_', $key);
 
-            if($pieces[0]=='listProperties')
-                array_push($arListProperty,$value);
+            if ($pieces[0] == 'listProperties')
+                array_push($arListProperty, $value);
         }
 
         return $arListProperty;
@@ -198,27 +189,24 @@ class AdditionalPropertyClass
      */
     public static function convertToArrayExistingActive($newRequest)
     {
-        $arActive=[];
+        $arActive = [];
 
-        foreach ($newRequest as $key=>$value)
-        {
-            $pieces=explode('_',$key);
+        foreach ($newRequest as $key => $value) {
+            $pieces = explode('_', $key);
 
-            if($pieces[0]=='active')
-                $arActive[$pieces[1]]=$value;
+            if ($pieces[0] == 'active')
+                $arActive[$pieces[1]] = $value;
         }
 
         return $arActive;
     }
 
-    public static function checkRussiaWordsInExistingProperty($newRequest,$id)
+    public static function checkRussiaWordsInExistingProperty($newRequest, $id)
     {
-        $arSymbolCode=AdditionalPropertyClass::convertToArrayExistingSymbolCode($newRequest);
+        $arSymbolCode = AdditionalPropertyClass::convertToArrayExistingSymbolCode($newRequest);
 
-        foreach ($arSymbolCode as $arItem)
-        {
-            if(preg_match('@[А-я]@u',$arItem))
-            {
+        foreach ($arSymbolCode as $arItem) {
+            if (preg_match('@[А-я]@u', $arItem)) {
                 return true;
             }
         }
@@ -226,15 +214,15 @@ class AdditionalPropertyClass
         return false;
     }
 
-    public static function validationNewUniqueSymbolCode($newRequest,$id)
+    public static function validationNewUniqueSymbolCode($newRequest, $id)
     {
-        $arIdMewProperty=AdditionalPropertyClass::getArrayNewIdProperty($newRequest);
-        $arNewSymbolCode=AdditionalPropertyClass::convertToArrayNewSymbolCode($newRequest,$arIdMewProperty);
-        $errorUniqueSymbolCode=AdditionalPropertyClass::checkUniqueInsideArrayNewSymbolCode($arNewSymbolCode);
+        $arIdMewProperty = AdditionalPropertyClass::getArrayNewIdProperty($newRequest);
+        $arNewSymbolCode = AdditionalPropertyClass::convertToArrayNewSymbolCode($newRequest, $arIdMewProperty);
+        $errorUniqueSymbolCode = AdditionalPropertyClass::checkUniqueInsideArrayNewSymbolCode($arNewSymbolCode);
 
-        if(!$errorUniqueSymbolCode) {
+        if (!$errorUniqueSymbolCode) {
             foreach ($arNewSymbolCode as $arItem) {
-                if ($arItem!=null) {
+                if ($arItem != null) {
                     $count = SetAdditionalProperty::where('user_symbol_code', $arNewSymbolCode)->count();
                     if ($count > 0) {
                         $errorUniqueSymbolCode = true;
@@ -257,13 +245,12 @@ class AdditionalPropertyClass
      */
     public static function getArrayNewIdProperty($newRequest)
     {
-        $arIdMewProperty=[];
+        $arIdMewProperty = [];
 
-        foreach ($newRequest as $key=>$value)
-        {
-            $pieces=explode('_',$key);
-            if($pieces[0]=='JSpropertyName' && $value!=null)
-                array_push($arIdMewProperty,$pieces[1]);
+        foreach ($newRequest as $key => $value) {
+            $pieces = explode('_', $key);
+            if ($pieces[0] == 'JSpropertyName' && $value != null)
+                array_push($arIdMewProperty, $pieces[1]);
         }
 
         return $arIdMewProperty;
@@ -275,22 +262,18 @@ class AdditionalPropertyClass
      * @return array
      * Возвращает массив новых символьных кодов, в зависимости, где было заполнено название свойства
      */
-    public static function convertToArrayNewSymbolCode($newRequest,$arIdMewProperty)
+    public static function convertToArrayNewSymbolCode($newRequest, $arIdMewProperty)
     {
-        $arNewSymbolCode=[];
+        $arNewSymbolCode = [];
 
-        foreach ($newRequest as $key=>$value)
-        {
-            $pieces=explode('_',$key);
-            if($pieces[0]=='JSsymbolCode')
-            {
+        foreach ($newRequest as $key => $value) {
+            $pieces = explode('_', $key);
+            if ($pieces[0] == 'JSsymbolCode') {
                 //Выбираем лишь те символьные коды, чъи ID равно ID заполненного названия свойства
-                foreach ($arIdMewProperty as $arItem)
-                {
-                    if($arItem==$pieces[1])
-                    {
+                foreach ($arIdMewProperty as $arItem) {
+                    if ($arItem == $pieces[1]) {
                         $result = preg_replace("/\s+/", "", $value);
-                        array_push($arNewSymbolCode,$result);
+                        array_push($arNewSymbolCode, $result);
                         break;
                     }
                 }
@@ -307,24 +290,19 @@ class AdditionalPropertyClass
      */
     public static function checkUniqueInsideArrayNewSymbolCode($arNewSymbolCode)
     {
-        $errorUniqueSymbolCode=false;
+        $errorUniqueSymbolCode = false;
 
-        foreach ($arNewSymbolCode as $key=>$value)
-        {
-            if($value!='')
-            {
-                foreach ($arNewSymbolCode as $innerKey=>$innerValue)
-                {
-                    if($key!=$innerKey)
-                    {
-                        if($value==$innerValue)
-                        {
-                            $errorUniqueSymbolCode=true;
+        foreach ($arNewSymbolCode as $key => $value) {
+            if ($value != '') {
+                foreach ($arNewSymbolCode as $innerKey => $innerValue) {
+                    if ($key != $innerKey) {
+                        if ($value == $innerValue) {
+                            $errorUniqueSymbolCode = true;
                             break;
                         }
                     }
                 }
-                if($errorUniqueSymbolCode)
+                if ($errorUniqueSymbolCode)
                     break;
             }
         }
@@ -338,15 +316,13 @@ class AdditionalPropertyClass
      * @return bool
      * Проверка на русские буквы в новых введенных свойств
      */
-    public static function checkRussiaWordsInNewPropertySymbolCode($newRequest,$id)
+    public static function checkRussiaWordsInNewPropertySymbolCode($newRequest, $id)
     {
-        $arIdMewProperty=AdditionalPropertyClass::getArrayNewIdProperty($newRequest);
-        $arNewSymbolCode=AdditionalPropertyClass::convertToArrayNewSymbolCode($newRequest,$arIdMewProperty);
+        $arIdMewProperty = AdditionalPropertyClass::getArrayNewIdProperty($newRequest);
+        $arNewSymbolCode = AdditionalPropertyClass::convertToArrayNewSymbolCode($newRequest, $arIdMewProperty);
 
-        foreach ($arNewSymbolCode as $arItem)
-        {
-            if(preg_match('@[А-я]@u',$arItem))
-            {
+        foreach ($arNewSymbolCode as $arItem) {
+            if (preg_match('@[А-я]@u', $arItem)) {
                 return true;
             }
         }
@@ -354,38 +330,49 @@ class AdditionalPropertyClass
         return false;
     }
 
+    /**
+     * @param $newRequest
+     * @return mixed
+     * Возвращает maxID и html верстку
+     */
     public static function htmlRow($newRequest)
     {
-        $html='';
-        $count=1;
+        $html = '';
+        $count = 1;
 
-        $arNewProperties=AdditionalPropertyClass::getArrayNewProperties($newRequest);
-        $properties=AdditionalPropertyClass::getAllProperties();
+        $arNewProperties = AdditionalPropertyClass::getArrayNewProperties($newRequest);
+        $properties = AdditionalPropertyClass::getAllProperties();
 
-        foreach ($arNewProperties as $arItem)
-        {
-            $html.='<div class="row rowListProperty">';
+        foreach ($arNewProperties as $arItem) {
+            $html .= '<tr class="trAdditionalProp">';
 
-            $html.='<div class="col-md-3 colListProperty">
-                        <input type="text" name="JSpropertyName_'.$count.'" value="'.$arItem['JSpropertyName'].'">
-                    </div>
-                    <div class="col-md-3 colListProperty">'.self::htmlTagSelect($properties,$count,$newRequest,$arItem).'</div>
-                    <div class="col-md-1 d-flex align-items-center colListProperty">
-                        <input type="checkbox" name="JSactive_" '.self::checkActiveCheckbox($arItem).'>
-                    </div>
-                    <div class="col-md-3 colListProperty">
-                        <input type="text" name="JSsymbolCode_'.$count.'" value="'.$arItem['JSsymbolCode'].'">
-                    </div>
-                    <div class="col-md-1 colListProperty"></div>
-                    <div class="col-md-1"></div>';
+            $html .= '<td>
+                        <input type="text" name="JSpropertyName_' . $count . '" value="' . $arItem['JSpropertyName'] . '">
+                    </td>
+                    <td>' . self::htmlTagSelect($properties, $count, $newRequest, $arItem) . '</td>
+                    <td class="tdActiveProp">
+                        <input type="checkbox" name="JSactive_' . self::checkActiveCheckbox($arItem) . '">
+                    </td>
+                    <td>
+                        <input type="text" name="JSsymbolCode_' . $count . '" value="' . $arItem['JSsymbolCode'] . '">
+                    </td>
+                    <td>
+                        <div
+                            @click="JSopenModalWindow('.$count.')"
+                            class="btnDisplayNewProp"
+                        >
+                            ...
+                        </div>
+                    </td>
+                    <td></td>';
 
-            $html.='</div>';
+            $html .= '</tr>';
 
             $count++;
         }
 
-        $finalArray['html']=$html;
-        $finalArray['maxId']=$count;
+        $finalArray['html'] = $html;
+        $finalArray['maxId'] = $count;
 
         return $finalArray;
     }
@@ -397,23 +384,36 @@ class AdditionalPropertyClass
      */
     public static function getArrayNewProperties($newRequest)
     {
-        $arNewProperties=[];
+        $arNewProperties = [];
+        $A=[];
+        $idProp=0;
 
-        foreach ($newRequest as $key=>$value)
-        {
-            $pieces=explode('_',$key);
-            if($pieces[0]=='JSpropertyName')
+        foreach ($newRequest as $key => $value) {
+            $pieces = explode('_', $key);
+
+            if ($pieces[0]=='JSpropertyName' && $value!=null) {
+
                 $A[$pieces[0]]=$value;
-            if($pieces[0]=='JSlistProperties')
-                $A[$pieces[0]]=$value;
-            if($pieces[0]=='JSactive')
-                $A[$pieces[0]]=$value;
-            if($pieces[0]=='JSsymbolCode')
-            {
-                $A[$pieces[0]]=$value;
-                array_push($arNewProperties,$A);
-                $A=[];
+                $A['JSlistProperties']=$newRequest['JSlistProperties_'.$pieces[1]];
+                $A['JSactive']=array_key_exists('JSactive_'.$pieces[1],$newRequest)? $newRequest['JSactive_'.$pieces[1]]:false;
+                $A['JSsymbolCode']=$newRequest['JSsymbolCode_'.$pieces[1]];
+
+                $idProp=$newRequest['JSlistProperties_'.$pieces[1]];
+
+                if ($idProp==1) {
+                    $A['JSsettingAdditionalPropDefaultValInput']=$newRequest['JSsettingAdditionalPropDefaultValInput_'.$pieces[1]];
+                }
+                if ($idProp==2) {
+                    $A['JSsettingAdditionalPropDefaultValTextArea']=$newRequest['JSsettingAdditionalPropDefaultValTextArea_'.$pieces[1]];
+                    $A['JSwidthTextArea']=$newRequest['JSwidthTextArea_'.$pieces[1]];
+                    $A['JSheightTextArea']=$newRequest['JSheightTextArea_'.$pieces[1]];
+                }
             }
+
+            if (count($A)>0) {
+                array_push($arNewProperties, $A);
+            }
+            $A = [];
         }
 
         return $arNewProperties;
@@ -421,7 +421,7 @@ class AdditionalPropertyClass
 
     public static function getAllProperties()
     {
-        $properties=ListAdditionalProperty::all(['id','name']);
+        $properties = ListAdditionalProperty::all(['id', 'name']);
 
         return $properties;
     }
@@ -433,16 +433,15 @@ class AdditionalPropertyClass
      * @return string
      */
 
-    public static function htmlTagSelect($properties, $count, $newRequest,$arItemOuter)
+    public static function htmlTagSelect($properties, $count, $newRequest, $arItemOuter)
     {
-        $htmlSelect='<select name="JSlistProperties_'.$count.'">';
+        $htmlSelect = '<select class="JSlistProperties_'.$count.'" name="JSlistProperties_' . $count . '">';
 
-        foreach ($properties as $arItem)
-        {
-            $htmlSelect.='<option value="'.$arItem['id'].'" '.self::getSelectedTypeProperty($newRequest, $arItem, $count).'>'.$arItem['name'].'</option>';
+        foreach ($properties as $arItem) {
+            $htmlSelect .= '<option value="' . $arItem['id'] . '" ' . self::getSelectedTypeProperty($newRequest, $arItem, $count) . '>' . $arItem['name'] . '</option>';
         }
 
-        $htmlSelect.='</select>';
+        $htmlSelect .= '</select>';
 
         return $htmlSelect;
     }
@@ -455,39 +454,33 @@ class AdditionalPropertyClass
      */
     public static function getSelectedTypeProperty($newRequest, $arItem, $count)
     {
-        if($newRequest['JSlistProperties_'.$count]==$arItem->id)
-        {
+        if ($newRequest['JSlistProperties_' . $count] == $arItem->id) {
             return 'selected';
-        }else
-        {
+        } else {
             return '';
         }
     }
 
     public static function checkActiveCheckbox($arItem)
     {
-        if(array_key_exists('JSactive',$arItem))
-        {
+        if (array_key_exists('JSactive', $arItem)) {
             return 'checked';
-        }else
+        } else
             return '';
     }
 
-    public static function saveNewAdditionalProperty($newRequest,$id)
+    public static function saveNewAdditionalProperty($newRequest, $id)
     {
-        $arNewProperty=self::getArrayNewProperties($newRequest);
+        $arNewProperty = self::getArrayNewProperties($newRequest);
 
-        if(sizeof($arNewProperty)>0) {
-            $arIdMewProperty=AdditionalPropertyClass::getArrayNewIdProperty($newRequest);
-            $arNewSymbolCode=AdditionalPropertyClass::convertToArrayNewSymbolCode($newRequest,$arIdMewProperty);
-
-            SetAdditionalProperty::saveNewProperties($id,$arNewProperty, $arNewSymbolCode);
+        if (sizeof($arNewProperty) > 0) {
+            SetAdditionalProperty::saveNewProperties($id, $arNewProperty);
         }
     }
 
-    public static function deleteProperties($newRequest,$id)
+    public static function deleteProperties($newRequest, $id)
     {
-        $arIdProperties=self::getArrayDeletePropId($newRequest);
+        $arIdProperties = self::getArrayDeletePropId($newRequest);
 
         SetAdditionalProperty::deleteSetProperties($arIdProperties);
     }
@@ -499,16 +492,281 @@ class AdditionalPropertyClass
      */
     public static function getArrayDeletePropId($newRequest)
     {
-        $arIdProperties=[];
+        $arIdProperties = [];
 
-        foreach ($newRequest as $key=>$value)
-        {
-            $pieces=explode('_',$key);
+        foreach ($newRequest as $key => $value) {
+            $pieces = explode('_', $key);
 
-            if($pieces[0]=='propId')
-                array_push($arIdProperties,$pieces[1]);
+            if ($pieces[0] == 'propId')
+                array_push($arIdProperties, $pieces[1]);
         }
 
         return $arIdProperties;
+    }
+
+    /**
+     * @param $newRequest
+     * @return array
+     * Возвращает массив значений из модальных окон
+     */
+    public static function getArraySettingAdditionalProp($newRequest)
+    {
+        $arSettingAdditionalProp=[];
+
+        foreach ($newRequest as $key=>$value) {
+            $A=[];
+            $pieces=explode('_',$key);
+
+            //Получаем $value из индекса "listProperties_"
+            if ($pieces[0]=='listProperties') {
+                foreach ($newRequest as $innerKey=>$innerValue) {
+                    // Если input
+                    if($value==1) {
+                        $innerPieces=explode('_',$innerKey);
+
+                        //Т.к. мы находимся сейчас в Input
+                        //Необходимо взять значения для Input
+                        //$pieces[1]==$innerPieces[1] -> чтобы данные не перезаписывались
+                        if ($innerPieces[0]=='settingAdditionalPropDefaultValInput' && $pieces[1]==$innerPieces[1]) {
+                            $A['defaultValue']=$innerValue;
+                        }
+                    //если textArea
+                    } elseif ($value==2) {
+                        $innerPieces=explode('_',$innerKey);
+
+                        //$pieces[1]==$innerPieces[1] -> чтобы данные не перезаписывались
+                        if ($innerPieces[0]=='settingAdditionalPropDefaultValTextArea' && $pieces[1]==$innerPieces[1]) {
+                            $A['defaultValue']=$innerValue;
+                        }
+
+                        //$pieces[1]==$innerPieces[1] -> чтобы данные не перезаписывались
+                        if($innerPieces[0]=='widthTextArea' && $pieces[1]==$innerPieces[1]) {
+                            $A['width']=$innerValue;
+                        }
+
+                        //$pieces[1]==$innerPieces[1] -> чтобы данные не перезаписывались
+                        if($innerPieces[0]=='heightTextArea' && $pieces[1]==$innerPieces[1]) {
+                            $A['height']=$innerValue;
+                        }
+                    }
+                }
+            }
+
+            if (sizeof($A)>0) {
+                array_push($arSettingAdditionalProp,$A);
+            }
+        }
+
+        return $arSettingAdditionalProp;
+    }
+
+    public static function getHtmlModalWindowInput($newRequest)
+    {
+        $arSettingVal=self::getArrayNewProperties($newRequest);
+        $count=1;
+        $html='';
+
+        foreach ($arSettingVal as $arItem) {
+            if ($arItem['JSlistProperties']==1) {
+
+                $html.='<div
+                        class="bgFormSettingAddProp JSbgFormSettingInputAddProp_'.$count.'"
+                        style="display: none"
+                    >
+                        <div class="justWrap">
+                            <div class="wrapFormSettingAddProp">
+                                <div class="wrapAdminPageAddPropSettingLeft">
+                                    <p>
+                                        Значение по умолчанию
+                                    </p>
+                                </div>
+                                <div class="wrapAdminPageAddPropSettingRight">
+                                    <input
+                                        type="text"
+                                        name="JSsettingAdditionalPropDefaultValInput_'.$count.'"
+                                        value="'.$arItem['JSsettingAdditionalPropDefaultValInput'].'"
+                                    >
+                                </div>
+                            </div>
+                            <div class="wrapBlockBtnSaveSetting">
+                                <div class="wrapLeftBlockBtnSettingAddProp">
+                                    <div
+                                        class="btnSaveSetting"
+                                        @click="JScloseModalWindowProp('.$count.')"
+                                    >
+                                        Закрыть
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>';
+                $count++;
+
+                continue;
+            } else {
+
+                $html.='<div
+                        class="bgFormSettingAddProp JSbgFormSettingInputAddProp_'.$count.'"
+                        style="display: none"
+                    >
+                        <div class="justWrap">
+                            <div class="wrapFormSettingAddProp">
+                                <div class="wrapAdminPageAddPropSettingLeft">
+                                    <p>
+                                        Значение по умолчанию
+                                    </p>
+                                </div>
+                                <div class="wrapAdminPageAddPropSettingRight">
+                                    <input
+                                        type="text"
+                                        name="JSsettingAdditionalPropDefaultValInput_'.$count.'"
+                                    >
+                                </div>
+                            </div>
+                            <div class="wrapBlockBtnSaveSetting">
+                                <div class="wrapLeftBlockBtnSettingAddProp">
+                                    <div
+                                        class="btnSaveSetting"
+                                        @click="JScloseModalWindowProp('.$count.')"
+                                    >
+                                        Закрыть
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>';
+                $count++;
+
+                continue;
+            }
+        }
+
+        return $html;
+    }
+
+    public static function getHtmlModalWindowTextArea($newRequest)
+    {
+        $arSettingVal=self::getArrayNewProperties($newRequest);
+        $count=1;
+        $html='';
+
+
+        foreach ($arSettingVal as $arItem) {
+            if ($arItem['JSlistProperties']==2) {
+
+                $html.='<div
+                            class="bgFormSettingAddProp JSbgFormSettingTextAreaAddProp_'.$count.'"
+                            style="display: none"
+                        >
+                            <div class="justWrap">
+                                <div class="wrapFormSettingAddProp">
+                                    <div class="wrapAdminPageAddPropSettingLeft">
+                                        <p>
+                                            Значение по умолчанию
+                                        </p>
+                                    </div>
+                                    <div class="wrapAdminPageAddPropSettingRight">
+                                        <input
+                                            type="text"
+                                            name="JSsettingAdditionalPropDefaultValTextArea_'.$count.'"
+                                            value="'.$arItem['JSsettingAdditionalPropDefaultValTextArea'].'"
+                                         >
+                                    </div>
+                                </div>
+                                <div class="wrapFormSettingAddProp">
+                                    <div class="wrapAdminPageAddPropSettingLeft">
+                                        <p>
+                                        Размер поля
+                                        </p>
+                                    </div>
+                                    <div class="wrapAdminPageAddPropSettingRight sizeTextArea">
+                                        <input
+                                            type="text"
+                                            name="JSwidthTextArea_'.$count.'"
+                                            value="'.$arItem['JSwidthTextArea'].'"
+                                        >
+                                        <p>
+                                            X
+                                        </p>
+                                        <input
+                                            type="text"
+                                            name="JSheightTextArea_'.$count.'"
+                                            value="'.$arItem['JSheightTextArea'].'"
+                                        >
+                                    </div>
+                                </div>
+                                <div class="wrapBlockBtnSaveSetting">
+                                    <div class="wrapLeftBlockBtnSettingAddProp">
+                                        <div
+                                            @click="JScloseModalWindowProp('.$count.')"
+                                            class="btnSaveSetting"
+                                        >
+                                            Закрыть
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>';
+
+                $count++;
+                continue;
+            } else {
+                $html.='<div
+                            class="bgFormSettingAddProp JSbgFormSettingTextAreaAddProp_'.$count.'"
+                            style="display: none"
+                        >
+                            <div class="justWrap">
+                                <div class="wrapFormSettingAddProp">
+                                    <div class="wrapAdminPageAddPropSettingLeft">
+                                        <p>
+                                            Значение по умолчанию
+                                        </p>
+                                    </div>
+                                    <div class="wrapAdminPageAddPropSettingRight">
+                                        <input
+                                            type="text"
+                                            name="JSsettingAdditionalPropDefaultValTextArea_'.$count.'"
+                                         >
+                                    </div>
+                                </div>
+                                <div class="wrapFormSettingAddProp">
+                                    <div class="wrapAdminPageAddPropSettingLeft">
+                                        <p>
+                                        Размер поля
+                                        </p>
+                                    </div>
+                                    <div class="wrapAdminPageAddPropSettingRight sizeTextArea">
+                                        <input
+                                            type="text"
+                                            name="JSwidthTextArea_'.$count.'"
+                                        >
+                                        <p>
+                                            X
+                                        </p>
+                                        <input
+                                            type="text"
+                                            name="JSheightTextArea_'.$count.'"
+                                        >
+                                    </div>
+                                </div>
+                                <div class="wrapBlockBtnSaveSetting">
+                                    <div class="wrapLeftBlockBtnSettingAddProp">
+                                        <div
+                                            @click="JScloseModalWindowProp('.$count.')"
+                                            class="btnSaveSetting"
+                                        >
+                                            Закрыть
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>';
+
+                $count++;
+                continue;
+            }
+        }
+
+        return $html;
     }
 }

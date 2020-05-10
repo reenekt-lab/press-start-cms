@@ -16,7 +16,17 @@ class SetAdditionalProperty extends Model
         return $this->belongsTo(Category::class);
     }
 
-    protected $fillable=['property_id','category_id','active','user_symbol_code','value'];
+    protected $fillable=[
+        'property_id',
+        'category_id',
+        'active',
+        'user_symbol_code',
+        'value',
+        'name',
+        'defaultVal',
+        'width',
+        'height',
+    ];
 
     public static function updateExistingProperties(
         $arIdExistingSetAdditional,
@@ -24,7 +34,8 @@ class SetAdditionalProperty extends Model
         $arListPropertyExistingSetAdditional,
         $arActiveExistingSetAdditional,
         $arSymbolCodeExistingSetAdditional,
-        $idCategory
+        $idCategory,
+        $arSettingAdditionalProp
     ){
         $i=0;
         foreach ($arIdExistingSetAdditional as $arId)
@@ -32,8 +43,12 @@ class SetAdditionalProperty extends Model
             SetAdditionalProperty::find($arId)->update([
                 'property_id'=>$arListPropertyExistingSetAdditional[$i],
                 'category_id'=>$idCategory,
+                'name'=>$arNameExistingSetAdditional[$i],
                 'active'=>array_key_exists($arId,$arActiveExistingSetAdditional)? true:false,
                 'user_symbol_code'=>$arSymbolCodeExistingSetAdditional[$i],
+                'defaultVal'=>$arSettingAdditionalProp[$i]['defaultValue'],
+                'width'=>array_key_exists('width',$arSettingAdditionalProp[$i])? $arSettingAdditionalProp[$i]['width']:null,
+                'height'=>array_key_exists('height',$arSettingAdditionalProp[$i])? $arSettingAdditionalProp[$i]['height']:null,
             ]);
             $i++;
         }
@@ -41,8 +56,7 @@ class SetAdditionalProperty extends Model
 
     public static function saveNewProperties(
         $idSuperCategory,
-        $arNewProperties,
-        $arNewSymbolCode
+        $arNewProperties
     ){
         $i=0;
         foreach ($arNewProperties as $arItem)
@@ -53,6 +67,9 @@ class SetAdditionalProperty extends Model
             $setProperties->name = $arItem['JSpropertyName'];
             $setProperties->active = array_key_exists('JSactive', $arItem)? true:false;
             $setProperties->user_symbol_code  = $arItem['JSsymbolCode'];
+            $setProperties->defaultVal  = array_key_exists('JSsettingAdditionalPropDefaultValInput',$arItem)? $arItem['JSsettingAdditionalPropDefaultValInput']:$arItem['JSsettingAdditionalPropDefaultValTextArea'];
+            $setProperties->width  = array_key_exists('JSwidthTextArea',$arItem)? $arItem['JSwidthTextArea']:null;
+            $setProperties->height  = array_key_exists('JSheightTextArea',$arItem)? $arItem['JSheightTextArea']:null;
 
             $setProperties->save();
 

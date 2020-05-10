@@ -73,34 +73,34 @@
                     </textarea>
 
                     @if($arSetAdditionalProperties!=null)
-                        @php
-                        $i=0;
-                        @endphp
-                        @foreach($arSetAdditionalProperties as $arItem)
-                            <p class="add_content_title">
-                                {{$arItem->name}}
-                            </p>
-                            @if($arItem->listAdditionalProperty->type=='input')
-                                <!--Проверяем, есть ли у данного контента свойства с значением-->
-                                @if(sizeof($arPropVal)>0 && isset($arPropVal[$i]))
-                                    <input
-                                        type="text"
-                                        name="additionalProperty_{{$arItem->id}}"
-                                        value="{{old('additionalProperty_'.$arItem->id,$arItem->id==$arPropVal[$i]->set_additional_prop_id?$arPropVal[$i]->value:'')}}"
-                                    >
-                                @else
-                                    <input
-                                        type="text"
-                                        name="additionalProperty_{{$arItem->id}}"
-                                        value="{{old('additionalProperty_'.$arItem->id)}}"
-                                    >
-                                @endif
-                            @endif
-
+                        <div>
                             @php
-                                $i++
+                                $i=0;
                             @endphp
-                        @endforeach
+                            @foreach($arSetAdditionalProperties as $arItem)
+                                <p class="add_content_title">
+                                    {{$arItem->name}}
+                                </p>
+                                @if($arItem->listAdditionalProperty->type=='input')
+
+                                    <input
+                                        name="additionalPropValInput_{{$i}}"
+                                        type="text"
+                                        value="{{old('additionalPropValInput_'.$i,$arPropVal[$i]->value)}}"
+                                    >
+                                @elseif($arItem->listAdditionalProperty->type=='textarea')
+                                    <textarea
+                                        name="additionalPropertyTextArea_{{$arItem->id}}"
+                                        cols="{{$arItem->width!=null? $arItem->width:30}}"
+                                        rows="{{$arItem->height!=null? $arItem->height:5}}"
+                                    >{{old('additionalPropValTextArea_'.$i,$arPropVal[$i]->value)}}</textarea>
+                                @endif
+
+                                @php
+                                    $i++
+                                @endphp
+                            @endforeach
+                        </div>
                     @endif
 
                     @if(Gate::allows('access_to_edit'))

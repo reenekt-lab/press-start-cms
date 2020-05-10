@@ -96,12 +96,13 @@ class InteractSetAdditionalProperty
     {
         $arProperties=[];
 
-        foreach ($newRequest as $key=>$value)
-        {
+        foreach ($newRequest as $key=>$value) {
             $pieces=explode('_',$key);
 
-            if($pieces[0]=='additionalProperty')
-            {
+            if($pieces[0]=='additionalProperty') {
+                $arProperties[$pieces[1]]=$value;
+            }
+            if ($pieces[0]=='additionalPropertyTextArea') {
                 $arProperties[$pieces[1]]=$value;
             }
         }

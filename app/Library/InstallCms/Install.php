@@ -131,6 +131,7 @@ class Install
 
         //Вставка значкний в таблицу "list_additional_properties"
         DB::insert('INSERT INTO `list_additional_properties` (`id`, `name`, `type`, `created_at`, `updated_at`) VALUES
-        (1, \'строка\', \'input\', NULL, NULL)');
+        (1, \'строка\', \'input\', NULL, NULL),
+        (2, \'поле\', \'textarea\', NULL, NULL)');
     }
 }

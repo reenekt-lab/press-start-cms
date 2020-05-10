@@ -2,7 +2,7 @@
 
 @section('from_add_content')
     <div class="row">
-        <div class="col-12 bg_detail">
+        <div class="bg_detail">
             <div class="wrap_chain">
                 <a href="{{route('list_categories')}}">
                     Категории
@@ -34,21 +34,32 @@
                 <p class="add_content_title">
                     Название
                 </p>
-                <input name="title" type="text"> <br>
+                <input name="title" type="text" value="{{old('title')}}"> <br>
                 <p>
                     Содержимое
                 </p>
-                <textarea name="content" id="editor" cols="30" rows="30"></textarea>
+                <textarea name="content" id="editor" cols="30" rows="30">{{old('content')}}</textarea>
 
                 @if($arSetAdditionalProperties!=null)
-                    @foreach($arSetAdditionalProperties as $arItem)
-                        <p class="add_content_title">
-                            {{$arItem->name}}
-                        </p>
-                        @if($arItem->listAdditionalProperty->type=='input')
-                            <input type="text" name="additionalProperty_{{$arItem->id}}" value="{{old('additionalProperty_'.$arItem->id,$arItem->value)}}">
-                        @endif
-                    @endforeach
+                    <div>
+                        @foreach($arSetAdditionalProperties as $arItem)
+                            <p class="add_content_title">
+                                {{$arItem->name}}
+                            </p>
+                            @if($arItem->listAdditionalProperty->type=='input')
+                                <input type="text" name="additionalProperty_{{$arItem->id}}" value="{{old('additionalProperty_'.$arItem->id,$arItem->defaultVal)}}">
+                            @endif
+
+                            @if($arItem->listAdditionalProperty->type=='textarea')
+                                <textarea
+                                    name="additionalPropertyTextArea_{{$arItem->id}}"
+                                    cols="{{$arItem->width!=null? $arItem->width:30}}"
+                                    rows="{{$arItem->height!=null? $arItem->height:5}}"
+                                    style="resize: none"
+                                >{{old('additionalPropertyTextArea_'.$arItem->id,$arItem->defaultVal)}}</textarea>
+                            @endif
+                        @endforeach
+                    </div>
                 @endif
 
                 <input class="btn btn-primary btn_preloader" type="submit" value="Сохранить">
