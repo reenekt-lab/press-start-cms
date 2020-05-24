@@ -47,7 +47,11 @@
                                 {{$arItem->name}}
                             </p>
                             @if($arItem->listAdditionalProperty->type=='input')
-                                <input type="text" name="additionalProperty_{{$arItem->id}}" value="{{old('additionalProperty_'.$arItem->id,$arItem->defaultVal)}}">
+                                <input
+                                    type="text"
+                                    name="additionalPropValInput_{{$arItem->id}}"
+                                    value="{{old('additionalProperty_'.$arItem->id,$arItem->defaultVal)}}"
+                                >
                             @endif
 
                             @if($arItem->listAdditionalProperty->type=='textarea')

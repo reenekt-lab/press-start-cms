@@ -78,7 +78,7 @@ class InteractSetAdditionalProperty
         foreach ($newRequest as $key=>$value)
         {
             $pieces=explode('_',$key);
-            if($pieces[0]=='additionalProperty')
+            if($pieces[0]=='additionalPropValInput' || $pieces[0]=='additionalPropertyTextArea')
             {
                 return true;
             }
@@ -99,7 +99,7 @@ class InteractSetAdditionalProperty
         foreach ($newRequest as $key=>$value) {
             $pieces=explode('_',$key);
 
-            if($pieces[0]=='additionalProperty') {
+            if($pieces[0]=='additionalPropValInput') {
                 $arProperties[$pieces[1]]=$value;
             }
             if ($pieces[0]=='additionalPropertyTextArea') {
@@ -117,5 +117,21 @@ class InteractSetAdditionalProperty
         if ($isProperties) {
             StorageValSetAdditionalProp::updateValProp(self::getArrayProperties($newRequest),$idContent, self::getIdSelectedSuperCategory($idCategory));
         }
+    }
+
+    /**
+     * @param $idCategory - ID текущей категории
+     * @param $idContent - ID текущего контента
+     * @param $setAdditionalProp - ID текущего свойства
+     * @return string - Возвращает значение совйства
+     */
+    public static function getValueProp($idCategory, $idContent, $setAdditionalProp)
+    {
+        $k=StorageValSetAdditionalProp::where('super_category_id',$idCategory)
+            ->where('content_id',$idContent)
+            ->where('set_additional_prop_id',$setAdditionalProp)
+            ->first();
+
+        return $k!=null? $k->value:'';
     }
 }

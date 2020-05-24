@@ -238,15 +238,11 @@ class AdminContent extends Controller
         //Получаем коллекцию набора свойств
         $arSetAdditionalProperties=InteractSetAdditionalProperty::getSetAdditionalProperty($id);
 
-        //Получаем коллекцию значений свойств
-        $arPropVal=Content::find($idContent)->contentPropVal;
-
         return view('system.admin_page.content.contents.detail_content',compact(
             'arContent',
             'id',
             'user',
-            'arSetAdditionalProperties',
-            'arPropVal'
+            'arSetAdditionalProperties'
             ));
     }
 

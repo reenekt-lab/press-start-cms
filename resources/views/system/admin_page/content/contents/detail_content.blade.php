@@ -74,31 +74,23 @@
 
                     @if($arSetAdditionalProperties!=null)
                         <div>
-                            @php
-                                $i=0;
-                            @endphp
                             @foreach($arSetAdditionalProperties as $arItem)
                                 <p class="add_content_title">
                                     {{$arItem->name}}
                                 </p>
                                 @if($arItem->listAdditionalProperty->type=='input')
-
                                     <input
-                                        name="additionalPropValInput_{{$i}}"
+                                        name="additionalPropValInput_{{$arItem->id}}"
                                         type="text"
-                                        value="{{old('additionalPropValInput_'.$i,$arPropVal[$i]->value)}}"
+                                        value="{{old('additionalPropValInput_'.$arItem->id,App\Library\WorkWithSetAdditionalPropery\InteractSetAdditionalProperty::getValueProp($id, $arContent->id, $arItem->id))}}"
                                     >
                                 @elseif($arItem->listAdditionalProperty->type=='textarea')
                                     <textarea
                                         name="additionalPropertyTextArea_{{$arItem->id}}"
                                         cols="{{$arItem->width!=null? $arItem->width:30}}"
                                         rows="{{$arItem->height!=null? $arItem->height:5}}"
-                                    >{{old('additionalPropValTextArea_'.$i,$arPropVal[$i]->value)}}</textarea>
+                                    >{{old('additionalPropValTextArea_'.$arItem->id,App\Library\WorkWithSetAdditionalPropery\InteractSetAdditionalProperty::getValueProp($id, $arContent->id, $arItem->id))}}</textarea>
                                 @endif
-
-                                @php
-                                    $i++
-                                @endphp
                             @endforeach
                         </div>
                     @endif
